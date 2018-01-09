@@ -1,0 +1,65 @@
+version: '3.3'
+
+networks:
+  default:
+    external:
+      name: ${TEST_NETWORK_NAME}
+
+services:
+  tracking-selenium-hub:
+    image: selenium/hub
+    container_name: tracking_selenium_hub_${RANDOM_SUFFIX}
+    hostname: tracking-selenium-hub
+    networks:
+      default:
+        aliases:
+          - tracking-selenium-hub.sandbox
+
+  tracking-selenium-chrome:
+    image: selenium/node-chrome
+    container_name: tracking_selenium_chrome_${RANDOM_SUFFIX}
+    hostname: tracking-selenium-chrome
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=tracking-selenium-hub.sandbox
+      - HUB_PORT_4444_TCP_PORT=4444
+    networks:
+      default:
+        aliases:
+          - tracking-selenium-chrome.sandbox
+    depends_on:
+      - tracking-selenium-hub
+
+  tracking-nginx-test:
+    image: adsmurai/nginx:dev-1.12
+    container_name: tracking_nginx_test_${RANDOM_SUFFIX}
+    hostname: tracking-nginx-test
+    volumes:
+      - "${PRJ_DIR}/docker/tracking-nginx.conf:/etc/nginx/conf.d/tracking-nginx.conf:ro"
+      - "${PRJ_DIR}/docker/certificates:/data/certificates:ro"
+      - "${PRJ_DIR}/test/fixtures:/data/tracking:ro"
+    environment:
+      - HOST_USER_ID
+      - HOST_GROUP_ID
+    networks:
+      default:
+        aliases:
+          - tracking-test.adsmurai.local
+
+  cucumber-command:
+    image: adsmurai/js-tools:dev-8.7
+    container_name: tracking_cucumber_${RANDOM_SUFFIX}
+    hostname: tracking_cucumber
+    volumes:
+      - "${PRJ_DIR}:/data"
+    working_dir: "/data"
+    environment:
+      - HOST_USER_ID
+      - HOST_GROUP_ID
+      - CUCUMBER_PARAMS
+    depends_on:
+      - tracking-nginx-test
+      - tracking-selenium-hub
+      - tracking-selenium-chrome
+    command:
+      - "yarn"
+      - "test"
