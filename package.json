@@ -1,0 +1,20 @@
+{
+  "name": "adsmurai-tracker",
+  "version": "0.0.1",
+  "description": "Javascript plugin to enable behaviour tracking inside UGC galleries and e-commerce sites.",
+  "main": "index.js",
+  "repository": "git@bitbucket.org:adsmurai/tracking-js-plugin.git",
+  "contributors": [
+    "Andrés Correa Casablanca <andreu@adsmurai.com>",
+    "Toni Penya-Alba <toni.penya@adsmurai.com>"
+  ],
+  "license": "propietary",
+  "private": true,
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "cucumber": "^3.2.1"
+  },
+  "scripts": {
+    "test": "cucumber.js ./test/features"
+  }
+}
