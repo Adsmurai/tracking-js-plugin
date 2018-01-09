@@ -7,7 +7,7 @@ networks:
 
 services:
   tracking-selenium-hub:
-    image: selenium/hub
+    image: selenium/hub:3.8.1
     container_name: tracking_selenium_hub_${RANDOM_SUFFIX}
     hostname: tracking-selenium-hub
     networks:
@@ -16,7 +16,7 @@ services:
           - tracking-selenium-hub.sandbox
 
   tracking-selenium-chrome:
-    image: selenium/node-chrome
+    image: selenium/node-chrome:3.8.1
     container_name: tracking_selenium_chrome_${RANDOM_SUFFIX}
     hostname: tracking-selenium-chrome
     environment:
