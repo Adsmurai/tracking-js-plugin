@@ -1,4 +1,5 @@
 const { defineSupportCode } = require('cucumber');
+var wdajax = require('webdriverajax');
 
 defineSupportCode((cucumber) => {
     const Mink = require('cucumber-mink');
@@ -13,6 +14,15 @@ defineSupportCode((cucumber) => {
         },
         timeout: 5000,
     };
+
     Mink.configure(parameters);
     Mink.init(cucumber);
+    wdajax.init(Mink.driver.client);
+    global.browser = Mink.driver.client;
+});
+
+defineSupportCode(function({After, Before}) {
+  Before(function () {
+    browser.setupInterceptor();
+  });
 });

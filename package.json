@@ -13,7 +13,8 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "cucumber": "^3.2.1",
-    "cucumber-mink": "^1.8.0"
+    "cucumber-mink": "^1.8.0",
+    "webdriverajax": "^2.1.0"
   },
   "scripts": {
     "test": "cucumber.js ./test/features"
