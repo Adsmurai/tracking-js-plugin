@@ -20,9 +20,3 @@ defineSupportCode((cucumber) => {
     wdajax.init(Mink.driver.client);
     global.browser = Mink.driver.client;
 });
-
-defineSupportCode(function({After, Before}) {
-  Before(function () {
-    browser.setupInterceptor();
-  });
-});

@@ -1,20 +1,19 @@
 const { Then } = require('cucumber');
 
 Then('the browser sends a {string} request to {string}', function(httpVerb, url, callback) {
-    const STATUS_CODE = 200;    // TODO: Get rid of this magick number.
+    const STATUS_CODE = 405;    // TODO: Get rid of this magick number.
 
-    browser.expectRequest(httpVerb, url, STATUS_CODE);
-    err = browser.assertRequests();
-
-    // TODO: Check which standard of promises is being used (https://promisesaplus.com/)
-    // TODO: specify the success and err methods in separate calls to the promise
-    err.then(
-        function(value) {
-            console.log('success: ', value);
-            callback();
-        },
-        function(reason) {
-            callback(reason, "Error with ajax request.");
-        },
-    );
+    browser.setupInterceptor().then(function(value) {
+        console.log('<interceptor> success: ', value);
+        return browser.expectRequest(httpVerb, url, STATUS_CODE);
+    }).then(function(value) {
+        console.log('<expect> success: ', value);
+        return browser.assertRequests();
+    }).then(function(value) {
+        console.log('<assert> success: ', value);
+        callback();
+    }).catch(function(reason) {
+        console.log("Error with ajax request.");
+        callback(reason, "failed");
+    });
 });
