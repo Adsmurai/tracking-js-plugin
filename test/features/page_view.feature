@@ -16,3 +16,5 @@ Feature: Page View tracking
       | proto | page_file |
       | http  | a.html    |
       | https | a.html    |
+      | http  | b.html    |
+      | https | b.html    |
