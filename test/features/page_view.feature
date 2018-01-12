@@ -7,10 +7,14 @@ Feature: Page View tracking
     # Nothing here... yet
 
   Scenario Outline: Single page view gets tracked
-    When I browse "<proto>://tracking-test.adsmurai.local/<page_file>"
+    Given I browse "<proto>://tracking-test.adsmurai.local"
+    When I am on "/<page_file>"
+      And I launch a page view event
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local"
 
     Examples:
       | proto | page_file |
       | http  | a.html    |
       | https | a.html    |
+      | http  | b.html    |
+      | https | b.html    |
