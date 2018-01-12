@@ -1409,9 +1409,9 @@ wdio-dot-reporter@~0.0.8:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/wdio-dot-reporter/-/wdio-dot-reporter-0.0.9.tgz#929b2adafd49d6b0534fda068e87319b47e38fe5"
 
-webdriverajax@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/webdriverajax/-/webdriverajax-2.1.0.tgz#31bc2232350d4cefb968cb5a61a0c0d0411561d7"
+"webdriverajax@git://github.com/chmanie/webdriverajax.git#v2.1.1":
+  version "2.1.1"
+  resolved "git://github.com/chmanie/webdriverajax.git#89277d5996563f38d998df81fdc2cbef5ae3d083"
 
 webdriverio@4.9.11:
   version "4.9.11"
