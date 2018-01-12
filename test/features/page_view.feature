@@ -9,7 +9,7 @@ Feature: Page View tracking
   Scenario Outline: Single page view gets tracked
     Given I browse "<proto>://tracking-test.adsmurai.local"
     When I am on "/<page_file>"
-    Then I should be on "/<page_file>"
+      And I launch a page view event
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local"
 
     Examples:
