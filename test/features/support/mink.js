@@ -1,5 +1,7 @@
+'use strict';
+
 const { defineSupportCode } = require('cucumber');
-var wdajax = require('webdriverajax');
+const wdajax = require('webdriverajax');
 
 defineSupportCode((cucumber) => {
     const Mink = require('cucumber-mink');
