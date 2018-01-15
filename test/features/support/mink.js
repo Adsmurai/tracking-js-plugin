@@ -1,5 +1,7 @@
+'use strict';
+
 const { defineSupportCode } = require('cucumber');
-var wdajax = require('webdriverajax');
+const wdajax = require('webdriverajax');
 
 defineSupportCode((cucumber) => {
     const Mink = require('cucumber-mink');
@@ -9,7 +11,7 @@ defineSupportCode((cucumber) => {
             desiredCapabilities: {
                 browserName: 'chrome',
             },
-            host: "tracking-selenium-hub.sandbox",
+            host: 'tracking-selenium-hub.sandbox',
             port: 4444,
         },
         timeout: 5000,
