@@ -1,5 +1,9 @@
 'use strict';
 
+/* global console */
+/* global browser */
+/* global window */
+
 const { defineSupportCode } = require('cucumber');
 
 defineSupportCode(function ({Then, When}) {

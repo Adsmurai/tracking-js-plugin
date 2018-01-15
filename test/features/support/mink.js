@@ -11,7 +11,7 @@ defineSupportCode((cucumber) => {
             desiredCapabilities: {
                 browserName: 'chrome',
             },
-            host: "tracking-selenium-hub.sandbox",
+            host: 'tracking-selenium-hub.sandbox',
             port: 4444,
         },
         timeout: 5000,
