@@ -13,6 +13,7 @@ Feature: Page View tracking
       And I take a snapshot of sent AJAX requests
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/pageView"
       And the payload has property "pageViewId"
+      And the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
 
     Examples:
       | proto | page_file |

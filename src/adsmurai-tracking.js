@@ -8,7 +8,8 @@
             xhr.open('POST', 'https://tracking-api.adsmurai.local/pageView');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send(JSON.stringify({
-                pageViewId: 'the page view id'
+                pageViewId: 'the page view id',
+                url: window.location.href
             }));
         }
     };

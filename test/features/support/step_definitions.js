@@ -58,4 +58,10 @@ defineSupportCode(function ({Then, When}) {
         assert.property(payload, property);
         callback();
     });
+
+    Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function (property, value, callback) {
+        const payload = this.state.ajaxRequests[0].body;
+        assert.equal(payload[property], value);
+        callback();
+    });
 });
