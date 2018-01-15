@@ -14,6 +14,7 @@ Feature: Page View tracking
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/pageView"
       And the payload has property "pageViewId"
       And the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
+      And the content type is set to "application/json"
 
     Examples:
       | proto | page_file |

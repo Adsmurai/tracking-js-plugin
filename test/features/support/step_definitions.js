@@ -64,4 +64,10 @@ defineSupportCode(function ({Then, When}) {
         assert.equal(payload[property], value);
         callback();
     });
+
+    Then(/^the content type is set to "([^"]*)"$/, function (contentType, callback) {
+        const request = this.state.ajaxRequests[0];
+        assert.equal(contentType, request.headers['Content-Type']);
+        callback();
+    });
 });
