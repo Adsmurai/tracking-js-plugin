@@ -10,7 +10,9 @@ Feature: Page View tracking
     Given I browse "<proto>://tracking-test.adsmurai.local"
     When I am on "/<page_file>"
       And I launch a page view event
-    Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local"
+      And I take a snapshot of sent AJAX requests
+    Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/pageView"
+      And the payload has property "pageViewId"
 
     Examples:
       | proto | page_file |
@@ -18,3 +20,5 @@ Feature: Page View tracking
       | https | a.html    |
       | http  | b.html    |
       | https | b.html    |
+
+
