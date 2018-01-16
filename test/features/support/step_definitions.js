@@ -76,10 +76,21 @@ defineSupportCode(function ({Then, When}) {
     });
 
     Then(/^the pageViewId of the requests' are different$/, function (callback) {
+        const referencePageViewId = this.state.ajaxRequests[0].body.pageViewId;
         const differentPageViewIds = !this.state.ajaxRequests
             .map( request => request.body.pageViewId)
-            .every( pageViewId => pageViewId === this.state.ajaxRequests[0].body.pageViewId);
+            .every( pageViewId => pageViewId === referencePageViewId);
         assert.isTrue(differentPageViewIds);
+        callback();
+    });
+
+    Then(/^the fingerprint hash of all the requests' collected until now is the same$/, function (callback) {
+        const referenceHash = this.state.ajaxRequests[0].body.fingerprint.hash;
+        const sameFingerprints = this.state.ajaxRequests
+            .map( request => request.body.fingerprint.hash)
+            .every( fingerprintHash => fingerprintHash === referenceHash);
+
+        assert.isTrue(sameFingerprints);
         callback();
     });
 });

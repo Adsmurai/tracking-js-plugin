@@ -1,6 +1,5 @@
 'use strict';
 
-
 (function (_window) {
     const utils = {
         uuidv4: function() {
@@ -19,6 +18,7 @@
         }
     };
 
+    let fingerprint = {};
     const adsmurai_tracking = {
         registerPageViewEvent: function () {
             // TODO: this method should return a promise that's resolved after the servers responds
@@ -27,14 +27,28 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
                 pageViewId: this.pageViewId,
-                url: window.location.href
+                url: window.location.href,
+                fingerprint: fingerprint
             }));
         },
         pageViewId: utils.uuidv4(),
         utils: utils
     };
 
-    if (typeof(_window.adsmurai_tracking) === 'undefined') {
-        _window.adsmurai_tracking = adsmurai_tracking;
-    }
+    const fingerprintjs2Element = document.createElement('script');
+    fingerprintjs2Element.onload = function () {
+        new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
+            fingerprint = {
+                hash: fingerprintHash,
+                components: fingerprintComponents
+            };
+
+            if (typeof(_window.adsmurai_tracking) === 'undefined') {
+                _window.adsmurai_tracking = adsmurai_tracking;
+            }
+        });
+    };
+    fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
+
+    document.head.appendChild(fingerprintjs2Element);
 })(window);
