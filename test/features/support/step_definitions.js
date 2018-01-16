@@ -32,11 +32,15 @@ defineSupportCode(function ({Then, When}) {
             this.state = {};
         }
 
+        if (!this.state.hasOwnProperty('ajaxRequests')) {
+            this.state.ajaxRequests = [];
+        }
+
         const state = this.state;
         browser
             .getRequests()
             .then(function(requests) {
-                state.ajaxRequests = requests;
+                state.ajaxRequests = state.ajaxRequests.concat(requests);
                 callback();
             })
             .catch(function(reason) {
@@ -68,6 +72,14 @@ defineSupportCode(function ({Then, When}) {
     Then(/^the content type is set to "([^"]*)"$/, function (contentType, callback) {
         const request = this.state.ajaxRequests[0];
         assert.equal(contentType, request.headers['Content-Type']);
+        callback();
+    });
+
+    Then(/^the pageViewId of the requests' are different$/, function (callback) {
+        const differentPageViewIds = !this.state.ajaxRequests
+            .map( request => request.body.pageViewId)
+            .every( pageViewId => pageViewId === this.state.ajaxRequests[0].body.pageViewId);
+        assert.isTrue(differentPageViewIds);
         callback();
     });
 });
