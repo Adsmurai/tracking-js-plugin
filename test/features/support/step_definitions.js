@@ -57,18 +57,6 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the payload has property "([^"]*)"$/, function(property, callback) {
-        const payload = this.state.ajaxRequests[0].body;
-        assert.property(payload, property);
-        callback();
-    });
-
-    Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function (property, value, callback) {
-        const payload = this.state.ajaxRequests[0].body;
-        assert.equal(payload[property], value);
-        callback();
-    });
-
     Then(/^the content type is set to "([^"]*)"$/, function (contentType, callback) {
         const request = this.state.ajaxRequests[0];
         assert.equal(contentType, request.headers['Content-Type']);
@@ -98,6 +86,18 @@ defineSupportCode(function ({Then, When}) {
             .every( fingerprintHash => fingerprintHash === referenceHash);
 
         assert.isTrue(sameFingerprints);
+        callback();
+    });
+
+    Then(/^the payload has property "([^"]*)"$/, function(property, callback) {
+        const payload = this.state.ajaxRequests[0].body;
+        assert.property(payload, property);
+        callback();
+    });
+
+    Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function (property, value, callback) {
+        const payload = this.state.ajaxRequests[0].body;
+        assert.equal(payload[property], value);
         callback();
     });
 });
