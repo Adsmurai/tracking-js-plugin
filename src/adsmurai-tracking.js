@@ -15,6 +15,14 @@
                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
+        },
+        doNotTrack: function() {
+            return (
+                !!(navigator.doNotTrack-0)     || // Current & standard check
+                !!(window.doNotTrack-0)        || // MSIE 11 & MS Edge & Safari 7.1.3+
+                !!(navigator.msDoNotTrack-0)   || // MSIE 9 & MSIE 10
+                'yes' === navigator.doNotTrack    // Firefox < v32.0
+            );
         }
     };
 
