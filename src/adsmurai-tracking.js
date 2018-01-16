@@ -18,7 +18,6 @@
         }
     };
 
-    let fingerprint = {};
     const adsmurai_tracking = {
         registerPageViewEvent: function () {
             // TODO: this method should return a promise that's resolved after the servers responds
@@ -28,17 +27,21 @@
             xhr.send(JSON.stringify({
                 pageViewId: this.pageViewId,
                 url: window.location.href,
-                fingerprint: fingerprint
+                fingerprint: this.fingerprint
             }));
         },
         pageViewId: utils.uuidv4(),
+        fingerprint: {
+            hash: null,
+            components: null
+        },
         utils: utils
     };
 
     const fingerprintjs2Element = document.createElement('script');
     fingerprintjs2Element.onload = function () {
         new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
-            fingerprint = {
+            adsmurai_tracking.fingerprint = {
                 hash: fingerprintHash,
                 components: fingerprintComponents
             };
