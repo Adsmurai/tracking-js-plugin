@@ -4,6 +4,16 @@ const { defineSupportCode } = require('cucumber');
 const { assert } = require('chai');
 
 defineSupportCode(function ({Then, When}) {
+    When(/^I enable the doNotTrack feature$/, function (callback) {
+        return browser
+            .executeAsync(function (done) {
+                window.navigator.doNotTrack = '1';
+                window.doNotTrack = '1';
+                done();
+            })
+            .then(() => callback());
+    });
+
     When(/^I launch a page view event$/, function (callback) {
         browser
             .setupInterceptor()
