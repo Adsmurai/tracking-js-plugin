@@ -4,34 +4,26 @@ const { defineSupportCode } = require('cucumber');
 const { assert } = require('chai');
 
 defineSupportCode(function ({Then, When}) {
-    When(/^I enable the doNotTrack feature$/, function (callback) {
+    When(/^I enable the doNotTrack feature$/, function () {
         return browser
-            .executeAsync(function (done) {
+            .execute(function () {
                 window.navigator.doNotTrack = '1';
                 window.doNotTrack = '1';
-                done();
-            })
-            .then(() => callback());
-    });
-
-    When(/^I launch a page view event$/, function (callback) {
-        browser
-            .setupInterceptor()
-            .then(function () {
-                return browser.executeAsync(function (done) {
-                    // TODO: Wait for registerPageViewEvent's promise to resolv
-                    window.adsmurai_tracking.registerPageViewEvent();
-                    done();
-                });
-            })
-            .then(() => callback())
-            .catch(function(reason) {
-                console.error('Error setting up interceptor.', reason);
-                callback(reason, 'failure');
             });
     });
 
-    When(/^I take a snapshot of sent AJAX requests$/, function (callback) {
+    When(/^I launch a page view event$/, function () {
+        return browser
+            .setupInterceptor()
+            .then(function () {
+                return browser.execute(function () {
+                    // TODO: Wait for registerPageViewEvent's promise to resolve
+                    window.adsmurai_tracking.registerPageViewEvent();
+                });
+            });
+    });
+
+    When(/^I take a snapshot of sent AJAX requests$/, function () {
         if (!this.hasOwnProperty('state')) {
             this.state = {};
         }
@@ -41,14 +33,15 @@ defineSupportCode(function ({Then, When}) {
         }
 
         const state = this.state;
-        browser
+        return browser
             .getRequests()
             .then(function(requests) {
                 state.ajaxRequests = state.ajaxRequests.concat(requests);
-                callback();
             })
-            .catch(function(reason) {
-                callback(reason, 'failed');
+            .catch(function (e) {
+                if ('Could not find request with index undefined' !== e.message) {
+                    throw e;
+                }
             });
     });
 
