@@ -38,20 +38,42 @@
         utils: utils
     };
 
-    const fingerprintjs2Element = document.createElement('script');
-    fingerprintjs2Element.onload = function () {
-        new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
-            adsmurai_tracking.fingerprint = {
-                hash: fingerprintHash,
-                components: fingerprintComponents
+    loadFingerprintingJavascript()
+        .then(calculateFingerprint)
+        .then(injectTracking);
+
+
+    function injectTracking(fingerprint) {
+        adsmurai_tracking.fingerprint = fingerprint;
+
+        if (typeof(_window.adsmurai_tracking) === 'undefined') {
+            _window.adsmurai_tracking = adsmurai_tracking;
+        }
+    }
+
+    function calculateFingerprint() {
+        return new Promise(function(resolve) {
+            new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
+                resolve({
+                    hash: fingerprintHash,
+                    components: fingerprintComponents
+                });
+            });
+
+        });
+    }
+
+    function loadFingerprintingJavascript() {
+        const fingerprintjs2Element = document.createElement('script');
+
+        return new Promise(function(resolve) {
+            fingerprintjs2Element.onload = function () {
+                resolve();
             };
 
-            if (typeof(_window.adsmurai_tracking) === 'undefined') {
-                _window.adsmurai_tracking = adsmurai_tracking;
-            }
+            fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
+            document.head.appendChild(fingerprintjs2Element);
         });
-    };
-    fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
+    }
 
-    document.head.appendChild(fingerprintjs2Element);
 })(window);
