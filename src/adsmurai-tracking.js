@@ -42,13 +42,17 @@
         .then(calculateFingerprint)
         .then(injectTracking);
 
+    function loadFingerprintingJavascript() {
+        const fingerprintjs2Element = document.createElement('script');
 
-    function injectTracking(fingerprint) {
-        adsmurai_tracking.fingerprint = fingerprint;
+        return new Promise(function(resolve) {
+            fingerprintjs2Element.onload = function () {
+                resolve();
+            };
 
-        if (typeof(_window.adsmurai_tracking) === 'undefined') {
-            _window.adsmurai_tracking = adsmurai_tracking;
-        }
+            fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
+            document.head.appendChild(fingerprintjs2Element);
+        });
     }
 
     function calculateFingerprint() {
@@ -63,17 +67,12 @@
         });
     }
 
-    function loadFingerprintingJavascript() {
-        const fingerprintjs2Element = document.createElement('script');
+    function injectTracking(fingerprint) {
+        adsmurai_tracking.fingerprint = fingerprint;
 
-        return new Promise(function(resolve) {
-            fingerprintjs2Element.onload = function () {
-                resolve();
-            };
-
-            fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
-            document.head.appendChild(fingerprintjs2Element);
-        });
+        if (typeof(_window.adsmurai_tracking) === 'undefined') {
+            _window.adsmurai_tracking = adsmurai_tracking;
+        }
     }
 
 })(window);
