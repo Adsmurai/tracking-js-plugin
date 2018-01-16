@@ -97,4 +97,8 @@ defineSupportCode(function ({Then, When}) {
         assert.equal(payload[property], value);
         callback();
     });
+    Then(/^the browser has sent 0 requests$/, function (callback) {
+        assert.equal(0, this.state.ajaxRequests.length);
+        callback();
+    });
 });
