@@ -27,16 +27,21 @@
     };
 
     const adsmurai_tracking = {
+        registerEvent: function(eventName, eventData) {
+            if (utils.doNotTrack()) return;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'https://tracking-api.adsmurai.local/'+eventName);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(eventData));
+        },
         registerPageViewEvent: function () {
             // TODO: this method should return a promise that's resolved after the servers responds
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://tracking-api.adsmurai.local/pageView');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
+            this.registerEvent('pageView', {
                 pageViewId: this.pageViewId,
                 url: window.location.href,
                 fingerprint: this.fingerprint
-            }));
+            });
         },
         pageViewId: utils.uuidv4(),
         fingerprint: {
