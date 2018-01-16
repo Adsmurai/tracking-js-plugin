@@ -91,13 +91,21 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the fingerprint hash of all the requests' collected until now is the same$/, function (callback) {
-        const referenceHash = this.state.ajaxRequests[0].body.fingerprint.hash;
-        const sameFingerprints = this.state.ajaxRequests
-            .map( request => request.body.fingerprint.hash)
-            .every( fingerprintHash => fingerprintHash === referenceHash);
-
-        assert.isTrue(sameFingerprints);
+    Then(/^all requests collected have the same fingerprint hash$/, function (callback) {
+        assert.isTrue(allSame(this.state.ajaxRequests, x => x.body.fingerprint.hash));
         callback();
     });
+
+    Then(/^all requests collected have the same pageViewId$/, function (callback) {
+        assert.isTrue(allSame(this.state.ajaxRequests, x => x.body.pageViewId));
+        callback();
+    });
+
+    function allSame(requests, fieldAccessor) {
+        const referenceValue = fieldAccessor(requests[0]);
+        return requests
+            .map( request => fieldAccessor(request))
+            .every( value => value=== referenceValue);
+
+    }
 });

@@ -14,7 +14,7 @@ Feature: Page View tracking
       And I am on "/<page_file>"
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
-    Then the fingerprint hash of all the requests' collected until now is the same
+    Then all requests collected have the same fingerprint hash
 
     Examples:
       | proto | page_file |
