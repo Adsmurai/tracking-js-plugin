@@ -69,10 +69,7 @@
 
     function injectTracking(fingerprint) {
         adsmurai_tracking.fingerprint = fingerprint;
-
-        if (typeof(_window.adsmurai_tracking) === 'undefined') {
-            _window.adsmurai_tracking = adsmurai_tracking;
-        }
+        _window.adsmurai_tracking = adsmurai_tracking;
     }
 
 })(window);
