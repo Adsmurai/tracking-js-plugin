@@ -1,6 +1,5 @@
 'use strict';
 
-
 (function (_window) {
     const utils = {
         uuidv4: function() {
@@ -27,14 +26,54 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
                 pageViewId: this.pageViewId,
-                url: window.location.href
+                url: window.location.href,
+                fingerprint: this.fingerprint
             }));
         },
         pageViewId: utils.uuidv4(),
+        fingerprint: {
+            hash: null,
+            components: null
+        },
         utils: utils
     };
 
-    if (typeof(_window.adsmurai_tracking) === 'undefined') {
+    loadFingerprintingJavascript()
+        .then(calculateFingerprint)
+        .then(injectTracking);
+
+    function loadFingerprintingJavascript() {
+        if (typeof(Fingerprint2) !== 'undefined') {
+            return new Promise.resolve();
+        }
+
+        const fingerprintjs2Element = document.createElement('script');
+
+        return new Promise(function(resolve) {
+            fingerprintjs2Element.onload = function () {
+                resolve();
+            };
+
+            fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
+            document.head.appendChild(fingerprintjs2Element);
+        });
+    }
+
+    function calculateFingerprint() {
+        return new Promise(function(resolve) {
+            new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
+                resolve({
+                    hash: fingerprintHash,
+                    components: fingerprintComponents
+                });
+            });
+
+        });
+    }
+
+    function injectTracking(fingerprint) {
+        adsmurai_tracking.fingerprint = fingerprint;
         _window.adsmurai_tracking = adsmurai_tracking;
     }
+
 })(window);

@@ -75,11 +75,29 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the pageViewId of the requests' are different$/, function (callback) {
-        const differentPageViewIds = !this.state.ajaxRequests
+    Then(/^each request has a different pageViewId$/, function (callback) {
+        const pageViewidsCount = this.state.ajaxRequests
             .map( request => request.body.pageViewId)
-            .every( pageViewId => pageViewId === this.state.ajaxRequests[0].body.pageViewId);
-        assert.isTrue(differentPageViewIds);
+            .reduce((counts, pageViewId) => {
+                counts[pageViewId] = pageViewId in counts? counts[pageViewId] + 1: 1;
+                return counts;
+            }, {});
+
+        const maxRepetitions = Object
+            .values(pageViewidsCount)
+            .reduce((a,b) => Math.max(a,b), 0);
+
+        assert.equal(maxRepetitions, 1);
+        callback();
+    });
+
+    Then(/^the fingerprint hash of all the requests' collected until now is the same$/, function (callback) {
+        const referenceHash = this.state.ajaxRequests[0].body.fingerprint.hash;
+        const sameFingerprints = this.state.ajaxRequests
+            .map( request => request.body.fingerprint.hash)
+            .every( fingerprintHash => fingerprintHash === referenceHash);
+
+        assert.isTrue(sameFingerprints);
         callback();
     });
 });
