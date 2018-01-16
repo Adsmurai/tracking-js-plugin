@@ -1,9 +1,5 @@
 'use strict';
 
-/* global console */
-/* global browser */
-/* global window */
-
 const { defineSupportCode } = require('cucumber');
 const { assert } = require('chai');
 
@@ -18,9 +14,7 @@ defineSupportCode(function ({Then, When}) {
                     done();
                 });
             })
-            .then(function() {
-                callback();
-            })
+            .then(() => callback())
             .catch(function(reason) {
                 console.error('Error setting up interceptor.', reason);
                 callback(reason, 'failure');

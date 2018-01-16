@@ -23,5 +23,9 @@
             "error",
             "always"
         ]
+    },
+    "globals": {
+        "browser": false,
+        "window": false
     }
 }
