@@ -43,6 +43,10 @@
         .then(injectTracking);
 
     function loadFingerprintingJavascript() {
+        if (typeof(Fingerprint2) !== 'undefined') {
+            return new Promise.resolve();
+        }
+
         const fingerprintjs2Element = document.createElement('script');
 
         return new Promise(function(resolve) {
