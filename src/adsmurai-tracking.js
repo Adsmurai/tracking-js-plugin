@@ -3,8 +3,14 @@
 (function (_window) {
     function uuidv4() {
         /* Following  RFC4122 version 4 UUID. Implementation from https://stackoverflow.com/a/2117523 */
+        var array = new Uint32Array(32);
+        const randomIterator = window
+            .crypto.getRandomValues(array)
+            .map(x => x%16)
+            .values();
+
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            var r = randomIterator.next().value, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
     }
