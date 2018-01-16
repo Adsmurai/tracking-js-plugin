@@ -16,7 +16,7 @@
     "cucumber-mink": "^1.8.0",
     "eslint": "^4.15.0",
     "eslint-plugin-import": "^2.8.0",
-    "webdriverajax": "git://github.com/chmanie/webdriverajax.git#v2.1.1"
+    "webdriverajax": "git://github.com/tonipenya/webdriverajax.git#42317096880695f42a80d1264c12297e94761792"
   },
   "scripts": {
     "test": "cucumber.js ./test/features"
