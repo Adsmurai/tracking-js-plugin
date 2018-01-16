@@ -14,7 +14,7 @@ Feature: Page View tracking
       And I am on "/<page_file>"
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
-    Then the pageViewId of the requests' are different
+    Then each request has a different pageViewId
 
     Examples:
       | proto | page_file |

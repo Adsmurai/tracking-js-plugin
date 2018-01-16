@@ -75,12 +75,19 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the pageViewId of the requests' are different$/, function (callback) {
-        const referencePageViewId = this.state.ajaxRequests[0].body.pageViewId;
-        const differentPageViewIds = !this.state.ajaxRequests
+    Then(/^each request has a different pageViewId$/, function (callback) {
+        const pageViewidsCount = this.state.ajaxRequests
             .map( request => request.body.pageViewId)
-            .every( pageViewId => pageViewId === referencePageViewId);
-        assert.isTrue(differentPageViewIds);
+            .reduce((counts, pageViewId) => {
+                counts[pageViewId] = pageViewId in counts? counts[pageViewId] + 1: 1;
+                return counts;
+            }, {});
+
+        const maxRepetitions = Object
+            .values(pageViewidsCount)
+            .reduce((a,b) => Math.max(a,b), 0);
+
+        assert.equal(maxRepetitions, 1);
         callback();
     });
 
