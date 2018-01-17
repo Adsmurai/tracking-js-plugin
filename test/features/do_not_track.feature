@@ -7,7 +7,7 @@ Feature: Honouring doNotTrack browser settings
   Background:
     # Nothing here... yet
 
-  Scenario Outline: Single page view gets tracked
+  Scenario Outline: The pageView event is not sent when the doNotTrack setting is enabled
     Given I browse "<proto>://tracking-test.adsmurai.local"
     When I am on "/<page_file>"
       And I enable the doNotTrack feature
