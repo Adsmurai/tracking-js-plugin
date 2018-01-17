@@ -44,7 +44,7 @@ defineSupportCode(function ({Then, When}) {
         const state = this.state;
         return browser
             .getRequests()
-            .then(function(requests) {
+            .then(function (requests) {
                 state.ajaxRequests = state.ajaxRequests.concat(requests);
             })
             .catch(function (e) {
@@ -85,7 +85,7 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the browser sends a "([^"]*)" request to "([^"]*)"$/, function(httpVerb, url, callback) {
+    Then(/^the browser sends a "([^"]*)" request to "([^"]*)"$/, function (httpVerb, url, callback) {
         const requests = this.state.ajaxRequests;
         assert.equal(1, requests.length);
         const request = requests[0];
@@ -100,7 +100,7 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the payload has property "([^"]*)"$/, function(property, callback) {
+    Then(/^the payload has property "([^"]*)"$/, function (property, callback) {
         const payload = this.state.ajaxRequests[0].body;
         assert.property(payload, property);
         callback();
@@ -115,8 +115,8 @@ defineSupportCode(function ({Then, When}) {
     function allSame(requests, fieldAccessor) {
         const referenceValue = fieldAccessor(requests[0]);
         return requests
-            .map( request => fieldAccessor(request))
-            .every( value => value=== referenceValue);
+            .map(request => fieldAccessor(request))
+            .every(value => value === referenceValue);
 
     }
 });
