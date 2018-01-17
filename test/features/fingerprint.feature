@@ -8,14 +8,15 @@ Feature: Browser fingerprinting
 
   Scenario Outline: The same fingerprint is sent regardless fo page reload
     Given I browse "<proto>://tracking-test.adsmurai.local"
-    When I am on "/<page_file>"
+    When I am on "/<first_page_file>"
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
-      And I am on "/<page_file>"
+      And I am on "/<second_page_file>"
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
     Then all collected requests have the same fingerprint hash
 
     Examples:
-      | proto | page_file |
-      | http  | a.html    |
+      | proto | first_page_file | second_page_file |
+      | http  | a.html          | a.html           |
+      | http  | a.html          | b.html           |
