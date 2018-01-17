@@ -12,7 +12,7 @@ Feature: PageViewId preservation
       And I launch a page view event
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
-    Then all requests collected have the same pageViewId
+    Then all collected requests have the same pageViewId
 
     Examples:
       | proto | page_file |
