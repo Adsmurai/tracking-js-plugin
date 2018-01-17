@@ -54,12 +54,12 @@ defineSupportCode(function ({Then, When}) {
             });
     });
 
-    Then(/^all requests collected have the same fingerprint hash$/, function (callback) {
+    Then(/^all collected requests have the same fingerprint hash$/, function (callback) {
         assert.isTrue(allSame(this.state.ajaxRequests, x => x.body.fingerprint.hash));
         callback();
     });
 
-    Then(/^all requests collected have the same pageViewId$/, function (callback) {
+    Then(/^all collected requests have the same pageViewId$/, function (callback) {
         assert.isTrue(allSame(this.state.ajaxRequests, x => x.body.pageViewId));
         callback();
     });
