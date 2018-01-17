@@ -1,4 +1,4 @@
-Feature: Page View tracking
+Feature: Browser fingerprinting
   In order to track a user across different sessions
   As a web page visitor
   I want to be uniquely identified by means of a fingerprint
@@ -6,7 +6,7 @@ Feature: Page View tracking
   Background:
     # Nothing here... yet
 
-  Scenario Outline: Single page view gets tracked with unique fingerprint
+  Scenario Outline: The same fingerprint is sent regardless fo page reload
     Given I browse "<proto>://tracking-test.adsmurai.local"
     When I am on "/<page_file>"
       And I launch a page view event
