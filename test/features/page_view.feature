@@ -25,16 +25,20 @@ Feature: Page View tracking
       | https | b.html    |
 
   Scenario Outline: Referrer gets tracked
-    Given I browse "https://tracking-test.adsmurai.local"
+    Given I browse "https://<origin_host>"
       And I am on "<origin_path>"
       And I follow "a[href='<destination_path>']"
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
-    Then the payload's "referrer" has value "https://tracking-test.adsmurai.local<origin_path>"
+    Then the payload's "referrer" has value "https://<origin_host><origin_path>"
 
     Examples:
-      | origin_path | destination_path |
-      | /           | /                |
-      | /           | /a.html           |
-      | /a.html     | /                |
-      | /a.html     | /b.html           |
+      | origin_host                          | origin_path | destination_path |
+      | tracking-test.adsmurai.local         | /           | /                |
+      | tracking-test.adsmurai.local         | /           | /a.html          |
+      | tracking-test.adsmurai.local         | /a.html     | /                |
+      | tracking-test.adsmurai.local         | /a.html     | /b.html          |
+      | tracking-test-bis.adsmurai.local     | /           | /                |
+      | tracking-test-bis.adsmurai.local     | /           | /a.html          |
+      | tracking-test-bis.adsmurai.local     | /a.html     | /                |
+      | tracking-test-bis.adsmurai.local     | /a.html     | /b.html          |
