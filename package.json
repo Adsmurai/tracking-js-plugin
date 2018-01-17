@@ -1,8 +1,8 @@
 {
   "name": "adsmurai-tracker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Javascript plugin to enable behaviour tracking inside UGC galleries and e-commerce sites.",
-  "main": "index.js",
+  "main": "dist/adsmurai-tracking.min.js",
   "repository": "git@bitbucket.org:adsmurai/tracking-js-plugin.git",
   "contributors": [
     "Andrés Correa Casablanca <andreu@adsmurai.com>",
@@ -16,9 +16,15 @@
     "cucumber-mink": "^1.8.0",
     "eslint": "^4.15.0",
     "eslint-plugin-import": "^2.8.0",
-    "webdriverajax": "git://github.com/tonipenya/webdriverajax.git#42317096880695f42a80d1264c12297e94761792"
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "webdriverajax": "git://github.com/tonipenya/webdriverajax.git#42317096880695f42a80d1264c12297e94761792",
+    "webpack": "^3.10.0"
   },
   "scripts": {
-    "test": "cucumber.js ./test/features"
+    "test": "cucumber.js ./test/features",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "fingerprintjs2": "^1.5.1"
   }
 }
