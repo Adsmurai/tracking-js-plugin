@@ -1,7 +1,7 @@
 Feature: Browser fingerprinting
   In order to track a user across different sessions
   As a web page owner
-  I want to be uniquely identified by means of a fingerprint
+  I want identify users by means of a fingerprint
 
   Background:
     # Nothing here... yet
