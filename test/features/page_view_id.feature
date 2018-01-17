@@ -1,7 +1,7 @@
 Feature: PageViewId preservation
   In order to differentiate track actions from different page views
-  As a web page visitor
-  I want that events from same page view can be identified
+  As a web page owner
+  I want to be able to relate events to page views
 
   Background:
     # Nothing here... yet
