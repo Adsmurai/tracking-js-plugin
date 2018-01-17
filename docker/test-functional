@@ -16,6 +16,8 @@ trap finish EXIT ;
 export TEST_NETWORK_NAME="${PRJ_NAME}_test_${RANDOM_SUFFIX}"
 docker network create --driver bridge "${TEST_NETWORK_NAME}"                                &> ${DEBUG_OUTPUT_FILE} && \
                                                                                                                        \
+yarn build                                                                                  &> ${DEBUG_OUTPUT_FILE} && \
+                                                                                                                       \
 PRJ_DIR="${PRJ_DIR}"                                                                                                   \
 RANDOM_SUFFIX="${RANDOM_SUFFIX}"                                                                                       \
 TEST_NETWORK_NAME="${TEST_NETWORK_NAME}"                                                                               \
