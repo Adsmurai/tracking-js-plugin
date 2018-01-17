@@ -16,7 +16,7 @@
                 return v.toString(16);
             });
         },
-        doNotTrack: function() {
+        isDoNotTrackEnabled: function() {
             return (
                 !!(navigator.doNotTrack-0)     || // Current & standard check
                 !!(window.doNotTrack-0)        || // MSIE 11 & MS Edge & Safari 7.1.3+
@@ -28,7 +28,7 @@
 
     const adsmurai_tracking = {
         registerEvent: function(eventName, eventData) {
-            if (utils.doNotTrack()) return;
+            if (utils.isDoNotTrackEnabled()) return;
 
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'https://tracking-api.adsmurai.local/' + eventName);
