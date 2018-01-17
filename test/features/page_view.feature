@@ -1,7 +1,7 @@
 Feature: Page View tracking
   In order to track page view events
-  As a web page visitor
-  I want that my page view gets tracked
+  As a web page owner
+  I want to track page views
 
   Background:
     # Nothing here... yet
