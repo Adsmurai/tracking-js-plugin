@@ -6,7 +6,7 @@ Feature: Browser fingerprinting
   Background:
     # Nothing here... yet
 
-  Scenario Outline: The same fingerprint is sent regardless fo page reload
+  Scenario Outline: The same fingerprint is sent regardless of page reload
     Given I browse "<proto>://tracking-test.adsmurai.local"
     When I am on "/<first_page_file>"
       And I launch a page view event
