@@ -31,7 +31,7 @@
             if (utils.doNotTrack()) return;
 
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://tracking-api.adsmurai.local/'+eventName);
+            xhr.open('POST', 'https://tracking-api.adsmurai.local/' + eventName);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(eventData));
         },

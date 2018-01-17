@@ -5,10 +5,19 @@ const { assert } = require('chai');
 
 defineSupportCode(function ({Then, When}) {
     When(/^I enable the doNotTrack feature$/, function () {
+        // The aim of this step is to check how we behave once we know that the doNotTrack property is enabled, not to
+        // check if we are able to know if this property is enabled or not.
+
         return browser
             .execute(function () {
-                window.navigator.doNotTrack = '1';
-                window.doNotTrack = '1';
+                navigator.doNotTrack = '1';
+                if (navigator.doNotTrack !== '1') {
+                    // This is a hack:
+                    //   As expected, the navigator.doNotTrack (used in Chrome & Firefox) property is readonly for
+                    //   security reasons. So we set another not standard property (used in Safari) that is not readonly
+                    //   protected (in Chrome).
+                    window.doNotTrack = '1';
+                }
             });
     });
 
