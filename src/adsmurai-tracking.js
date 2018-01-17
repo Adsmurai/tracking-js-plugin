@@ -40,6 +40,7 @@
             this.registerEvent('pageView', {
                 pageViewId: this.pageViewId,
                 url: window.location.href,
+                referrer: document.referrer,
                 fingerprint: this.fingerprint
             });
         },
