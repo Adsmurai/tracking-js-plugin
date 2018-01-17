@@ -23,5 +23,10 @@
             "error",
             "always"
         ]
+    },
+    "globals": {
+        "browser": false,
+        "navigator": false,
+        "window": false
     }
 }
