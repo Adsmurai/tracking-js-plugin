@@ -48,7 +48,7 @@ services:
           - tracking-test-bis.adsmurai.local
           - tracking-api.adsmurai.local
 
-  cucumber-command:
+  functional-test-command:
     image: adsmurai/js-tools:dev-8.7
     container_name: tracking_cucumber_${RANDOM_SUFFIX}
     hostname: tracking_cucumber
@@ -65,4 +65,23 @@ services:
       - tracking-selenium-chrome
     command:
       - "yarn"
-      - "test"
+      - "test-functional"
+
+  unit-test-command:
+    image: adsmurai/js-tools:dev-8.7
+    container_name: tracking_cucumber_${RANDOM_SUFFIX}
+    hostname: tracking_cucumber
+    volumes:
+      - "${PRJ_DIR}:/data"
+    working_dir: "/data"
+    environment:
+      - HOST_USER_ID
+      - HOST_GROUP_ID
+      - MOCHA_PARAMS
+    depends_on:
+      - tracking-nginx-test
+      - tracking-selenium-hub
+      - tracking-selenium-chrome
+    command:
+      - "yarn"
+      - "test-unit"
