@@ -20,19 +20,16 @@ describe('uuidv4', function () {
     });
 
     it('returns different uuids in different calls', function (done) {
-        let firstUuidGenerated;
         browser
             .execute(function () {
-                return window.adsmurai_tracking.utils.uuidv4();
+                return [
+                    window.adsmurai_tracking.utils.uuidv4(),
+                    window.adsmurai_tracking.utils.uuidv4()
+                ];
             })
             .then(function (value) {
-                firstUuidGenerated = value.value;
-                return browser.execute(function () {
-                    return window.adsmurai_tracking.utils.uuidv4();
-                });
-            })
-            .then(function (value) {
-                assert.notEqual(value.value, firstUuidGenerated);
+                const generatedUuids = value.value;
+                assert.notEqual(generatedUuids[0], generatedUuids[1]);
                 done();
             })
             .catch(done);
