@@ -77,7 +77,7 @@ services:
     environment:
       - HOST_USER_ID
       - HOST_GROUP_ID
-      - CUCUMBER_PARAMS
+      - MOCHA_PARAMS
     depends_on:
       - tracking-nginx-test
       - tracking-selenium-hub
