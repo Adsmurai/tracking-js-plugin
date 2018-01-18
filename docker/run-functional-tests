@@ -6,7 +6,7 @@ source "${BASHLIB_DIR}/commonLib.sh"
 
 # This block will ensure that we clean the system after running the dockerized cucumber command
 function finish {
-    docker-compose -f "${SCRIPT_DIR}/cucumber-docker-compose.yml" down --volumes               &> ${DEBUG_OUTPUT_FILE} ;
+    docker-compose -f "${SCRIPT_DIR}/tests-docker-compose.yml" down --volumes               &> ${DEBUG_OUTPUT_FILE} ;
     docker network rm "${TEST_NETWORK_NAME}"                                                   &> ${DEBUG_OUTPUT_FILE} ;
     exit ${TEST_STATUS:-1}
 }
@@ -21,6 +21,6 @@ PRJ_DIR="${PRJ_DIR}"                                                            
 RANDOM_SUFFIX="${RANDOM_SUFFIX}"                                                                                       \
 TEST_NETWORK_NAME="${TEST_NETWORK_NAME}"                                                                               \
 CUCUMBER_PARAMS="$@"                                                                                                   \
-docker-compose -f "${SCRIPT_DIR}/cucumber-docker-compose.yml"                                                          \
+docker-compose -f "${SCRIPT_DIR}/tests-docker-compose.yml"                                                             \
                run --rm ${DOCKER_RUN_TERMINAL_MODE} functional-test-command                                            ;
 TEST_STATUS=$?
