@@ -9,25 +9,25 @@ const options = {
     port: 4444,
 };
 
-describe('uuidv4', function () {
+describe('uuidv4', function() {
     const browser = webdriverio.remote(options);
 
-    before('init browser session', function (done) {
+    before('init browser session', function(done) {
         browser
             .init()
             .url('https://tracking-test.adsmurai.local')
             .then(() => done());
     });
 
-    it('returns different uuids in different calls', function (done) {
+    it('returns different uuids in different calls', function(done) {
         browser
-            .execute(function () {
+            .execute(function() {
                 return [
                     window.adsmurai_tracking.utils.uuidv4(),
                     window.adsmurai_tracking.utils.uuidv4()
                 ];
             })
-            .then(function (value) {
+            .then(function(value) {
                 const generatedUuids = value.value;
                 assert.notEqual(generatedUuids[0], generatedUuids[1]);
                 done();
@@ -35,12 +35,12 @@ describe('uuidv4', function () {
             .catch(done);
     });
 
-    it('the uuid returned is compliant with the specification', function (done) {
+    it('the uuid returned is compliant with the specification', function(done) {
         browser
-            .execute(function () {
+            .execute(function() {
                 return window.adsmurai_tracking.utils.uuidv4();
             })
-            .then(function (value) {
+            .then(function(value) {
                 const generatedUuid = value.value;
                 const uuidv4Regex = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
                 assert.ok(uuidv4Regex.test(generatedUuid), 'offending uuid: ' + generatedUuid);
@@ -49,7 +49,7 @@ describe('uuidv4', function () {
             .catch(done);
     });
 
-    after('finish browser session', function (done) {
+    after('finish browser session', function(done) {
         browser
             .end()
             .then(() => done())
