@@ -64,5 +64,6 @@ services:
       - tracking-selenium-hub
       - tracking-selenium-chrome
     command:
-      - "yarn"
-      - "test"
+      - "bash"
+      - "-c"
+      - "yarn test-unit; yarn test-functional"
