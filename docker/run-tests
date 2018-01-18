@@ -1,28 +1,14 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
-BASHLIB_DIR="${SCRIPT_DIR}/bashLib"
-source "${BASHLIB_DIR}/commonLib.sh"
+${SCRIPT_DIR}/run-unit-tests
+UNIT_TEST_STATUS=$?
 
-# This block will ensure that we clean the system after running the dockerized cucumber command
-function finish {
-    docker-compose -f "${SCRIPT_DIR}/cucumber-docker-compose.yml" down --volumes               &> ${DEBUG_OUTPUT_FILE} ;
-    docker network rm "${TEST_NETWORK_NAME}"                                                   &> ${DEBUG_OUTPUT_FILE} ;
-    exit ${CUCUMBER_STATUS:-1}
-}
-trap finish EXIT ;
+${SCRIPT_DIR}/run-functional-tests
+FUNCTIONAL_TEST_STATUS=$?
 
-# Setting up the testing environment
-export TEST_NETWORK_NAME="${PRJ_NAME}_test_${RANDOM_SUFFIX}"
-docker network create --driver bridge "${TEST_NETWORK_NAME}"                                &> ${DEBUG_OUTPUT_FILE} && \
-                                                                                                                       \
-yarn build --env.devMode                                                                    &> ${DEBUG_OUTPUT_FILE} && \
-                                                                                                                       \
-PRJ_DIR="${PRJ_DIR}"                                                                                                   \
-RANDOM_SUFFIX="${RANDOM_SUFFIX}"                                                                                       \
-TEST_NETWORK_NAME="${TEST_NETWORK_NAME}"                                                                               \
-CUCUMBER_PARAMS="$@"                                                                                                   \
-docker-compose -f "${SCRIPT_DIR}/cucumber-docker-compose.yml"                                                          \
-               run --rm ${DOCKER_RUN_TERMINAL_MODE} cucumber-command                                                   ;
-
-CUCUMBER_STATUS=$?
+if [ $FUNCTIONAL_TEST_STATUS -ne 0 ]; then
+    TEST_STATUS=$FUNCTIONAL_TEST_STATUS
+else
+    TEST_STATUS=$UNIT_TEST_STATUS
+fi
