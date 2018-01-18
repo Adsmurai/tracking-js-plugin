@@ -1,0 +1,10 @@
+{
+    "rules": {
+        "no-console": "off"
+    },
+    "globals": {
+        "browser": false,
+        "navigator": false,
+        "window": false
+    }
+}
