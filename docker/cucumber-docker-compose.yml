@@ -37,7 +37,6 @@ services:
       - "${PRJ_DIR}/docker/tracking-nginx.conf:/etc/nginx/conf.d/tracking-nginx.conf:ro"
       - "${PRJ_DIR}/docker/certificates:/data/certificates:ro"
       - "${PRJ_DIR}/test/fixtures:/data/tracking"
-      - "${PRJ_DIR}/src/adsmurai-tracking.js:/data/tracking/adsmurai-tracking.js:ro"
       - "${PRJ_DIR}/log/nginx:/var/log/nginx"
     environment:
       - HOST_USER_ID

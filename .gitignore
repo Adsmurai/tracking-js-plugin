@@ -1,6 +1,7 @@
 /.idea/
+/dist/
+/log/
 /node_modules/
-/log
 /test/features/step_definitions
-/test/fixtures/adsmurai-tracking.js
+/test/fixtures/*.js
 /*.log

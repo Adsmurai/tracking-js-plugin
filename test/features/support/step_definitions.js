@@ -117,6 +117,5 @@ defineSupportCode(function ({Then, When}) {
         return requests
             .map(request => fieldAccessor(request))
             .every(value => value === referenceValue);
-
     }
 });

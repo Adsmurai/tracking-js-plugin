@@ -31,7 +31,7 @@
             if (utils.isDoNotTrackEnabled()) return;
 
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://tracking-api.adsmurai.local/' + eventName);
+            xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(eventData));
         },
