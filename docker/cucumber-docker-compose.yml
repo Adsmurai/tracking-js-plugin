@@ -46,6 +46,7 @@ services:
       default:
         aliases:
           - tracking-test.adsmurai.local
+          - tracking-test-bis.adsmurai.local
           - tracking-api.adsmurai.local
 
   cucumber-command:
