@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
+run(){
+    declare -r SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
+    "${SCRIPT_DIR}/run-unit-tests"
+    declare -r UNIT_TEST_STATUS=$?
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
-${SCRIPT_DIR}/run-unit-tests
-UNIT_TEST_STATUS=$?
+    "${SCRIPT_DIR}/run-functional-tests"
+    declare -r FUNCTIONAL_TEST_STATUS=$?
 
-${SCRIPT_DIR}/run-functional-tests
-FUNCTIONAL_TEST_STATUS=$?
-
-if [ $FUNCTIONAL_TEST_STATUS -ne 0 ]; then
-    TEST_STATUS=$FUNCTIONAL_TEST_STATUS
-else
-    TEST_STATUS=$UNIT_TEST_STATUS
-fi
+    declare -r TEST_STATUS=$(( $FUNCTIONAL_TEST_STATUS | $UNIT_TEST_STATUS ))
+    return ${TEST_STATUS}
+}
+run "$@"
