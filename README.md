@@ -1,6 +1,15 @@
 # Adsmurai tracking plugin
 
-## First steps
+**WARNING:** This project is in alpha state.
+
+## Quick start
+
+* To install this script through NPM:
+  `npm install adsmurai-tracker`.
+* To install this script through YARN:
+  `yarn add adsmurai-tracker`.
+
+## Build process
 
 In order to use this plugin, you must build it with the following command:
 ```bash

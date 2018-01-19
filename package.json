@@ -1,33 +1,33 @@
 {
   "name": "adsmurai-tracker",
-  "version": "0.0.2",
-  "description": "Javascript plugin to enable behaviour tracking inside UGC galleries and e-commerce sites.",
+  "version": "0.0.4",
+  "description": "Javascript plugin to enable behaviour tracking.",
   "main": "dist/adsmurai-tracking.min.js",
-  "repository": "git@bitbucket.org:adsmurai/tracking-js-plugin.git",
+  "repository": "https://github.com/Adsmurai/tracking-js-plugin.git",
   "contributors": [
     "Andrés Correa Casablanca <andreu@adsmurai.com>",
     "Toni Penya-Alba <toni.penya@adsmurai.com>"
   ],
-  "license": "propietary",
-  "private": true,
+  "license": "MIT",
+  "private": false,
   "devDependencies": {
     "chai": "^4.1.2",
     "cucumber": "^3.2.1",
     "cucumber-mink": "^1.8.0",
     "eslint": "^4.15.0",
     "eslint-plugin-import": "^2.8.0",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "webdriverajax": "git://github.com/tonipenya/webdriverajax.git#42317096880695f42a80d1264c12297e94761792",
-    "webpack": "^3.10.0",
+    "fingerprintjs2": "^1.5.1",
     "mocha": "^5.0.0",
-    "webdriverio": "^4.10.1"
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "webdriverajax": "git://github.com/tonipenya/webdriverajax.git#header-intercept",
+    "webdriverio": "^4.10.1",
+    "webpack": "^3.10.0",
+    "yarn": "^1.3.2"
   },
   "scripts": {
     "build": "webpack",
+    "prepublishOnly": "yarn build",
     "test-functional": "cucumber.js ./test/features",
     "test-unit": "mocha test/specs/**/*.js -R dot"
-  },
-  "dependencies": {
-    "fingerprintjs2": "^1.5.1"
   }
 }
