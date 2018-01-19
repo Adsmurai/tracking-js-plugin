@@ -1,23 +1,26 @@
+image: registry.gitlab.com/adsmurai/platform/docker-registry/js-tools:dev-8.9
+
 stages:
   - build
   - test-unit
   - test-functional
 
-build:
-  image: kkarczmarczyk/node-yarn
+.build:
   stage: build
   script:
     - yarn install
     - yarn build
 
 test-unit:
-  image: docker/compose
+  services:
+    - docker:dind
   stage: test-unit
   script:
     - ./docker/run-unit-tests
 
 test-functional:
-  image: docker/compose
+  services:
+    - docker:dind
   stage: test-functional
   script:
     - ./docker/run-functional-tests
