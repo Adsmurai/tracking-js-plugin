@@ -1,0 +1,10 @@
+!dist/
+.idea/
+docker/
+log/
+src/
+test/
+webpack.config.js
+yarn.lock
+yarn-error.log
+.eslintrc.json
