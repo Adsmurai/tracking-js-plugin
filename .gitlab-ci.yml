@@ -1,0 +1,12 @@
+build:
+  script:
+    - yarn build
+
+test-unit:
+  script:
+    - yarn test-unit
+
+test-functional:
+  script:
+    - yarn test-functional
+
