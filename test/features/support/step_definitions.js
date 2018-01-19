@@ -3,13 +3,13 @@
 const { defineSupportCode } = require('cucumber');
 const { assert } = require('chai');
 
-defineSupportCode(function ({Then, When}) {
-    When(/^I enable the doNotTrack feature$/, function () {
+defineSupportCode(function({Then, When}) {
+    When(/^I enable the doNotTrack feature$/, function() {
         // The aim of this step is to check how we behave once we know that the doNotTrack property is enabled, not to
         // check if we are able to know if this property is enabled or not.
 
         return browser
-            .execute(function () {
+            .execute(function() {
                 navigator.doNotTrack = '1';
                 if (navigator.doNotTrack !== '1') {
                     // This is a hack:
@@ -21,18 +21,18 @@ defineSupportCode(function ({Then, When}) {
             });
     });
 
-    When(/^I launch a page view event$/, function () {
+    When(/^I launch a page view event$/, function() {
         return browser
             .setupInterceptor()
-            .then(function () {
-                return browser.execute(function () {
+            .then(function() {
+                return browser.execute(function() {
                     // TODO: Wait for registerPageViewEvent's promise to resolve
                     window.adsmurai_tracking.registerPageViewEvent();
                 });
             });
     });
 
-    When(/^I take a snapshot of sent AJAX requests$/, function () {
+    When(/^I take a snapshot of sent AJAX requests$/, function() {
         if (!this.hasOwnProperty('state')) {
             this.state = {};
         }
@@ -44,27 +44,27 @@ defineSupportCode(function ({Then, When}) {
         const state = this.state;
         return browser
             .getRequests()
-            .then(function (requests) {
+            .then(function(requests) {
                 state.ajaxRequests = state.ajaxRequests.concat(requests);
             })
-            .catch(function (e) {
+            .catch(function(e) {
                 if ('Could not find request with index undefined' !== e.message) {
                     throw e;
                 }
             });
     });
 
-    Then(/^all collected requests have the same fingerprint hash$/, function (callback) {
+    Then(/^all collected requests have the same fingerprint hash$/, function(callback) {
         assert.isTrue(allSame(this.state.ajaxRequests, x => x.body.fingerprint.hash));
         callback();
     });
 
-    Then(/^all collected requests have the same pageViewId$/, function (callback) {
+    Then(/^all collected requests have the same pageViewId$/, function(callback) {
         assert.isTrue(allSame(this.state.ajaxRequests, x => x.body.pageViewId));
         callback();
     });
 
-    Then(/^each request has a different pageViewId$/, function (callback) {
+    Then(/^each request has a different pageViewId$/, function(callback) {
         const pageViewidsCount = this.state.ajaxRequests
             .map( request => request.body.pageViewId)
             .reduce((counts, pageViewId) => {
@@ -80,12 +80,12 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the browser has sent 0 requests$/, function (callback) {
+    Then(/^the browser has sent 0 requests$/, function(callback) {
         assert.equal(0, this.state.ajaxRequests.length);
         callback();
     });
 
-    Then(/^the browser sends a "([^"]*)" request to "([^"]*)"$/, function (httpVerb, url, callback) {
+    Then(/^the browser sends a "([^"]*)" request to "([^"]*)"$/, function(httpVerb, url, callback) {
         const requests = this.state.ajaxRequests;
         assert.equal(1, requests.length);
         const request = requests[0];
@@ -94,19 +94,19 @@ defineSupportCode(function ({Then, When}) {
         callback();
     });
 
-    Then(/^the content type is set to "([^"]*)"$/, function (contentType, callback) {
+    Then(/^the content type is set to "([^"]*)"$/, function(contentType, callback) {
         const request = this.state.ajaxRequests[0];
         assert.equal(contentType, request.headers['Content-Type']);
         callback();
     });
 
-    Then(/^the payload has property "([^"]*)"$/, function (property, callback) {
+    Then(/^the payload has property "([^"]*)"$/, function(property, callback) {
         const payload = this.state.ajaxRequests[0].body;
         assert.property(payload, property);
         callback();
     });
 
-    Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function (property, value, callback) {
+    Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function(property, value, callback) {
         const payload = this.state.ajaxRequests[0].body;
         assert.equal(payload[property], value);
         callback();

@@ -1,6 +1,6 @@
 'use strict';
 
-(function (_window) {
+(function(_window) {
     const utils = {
         uuidv4: function() {
             /* Following  RFC4122 version 4 UUID. Implementation from https://stackoverflow.com/a/2117523 */
@@ -35,7 +35,7 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(eventData));
         },
-        registerPageViewEvent: function () {
+        registerPageViewEvent: function() {
             // TODO: this method should return a promise that's resolved after the servers responds
             this.registerEvent('pageView', {
                 pageViewId: this.pageViewId,
@@ -64,7 +64,7 @@
         const fingerprintjs2Element = document.createElement('script');
 
         return new Promise(function(resolve) {
-            fingerprintjs2Element.onload = function () {
+            fingerprintjs2Element.onload = function() {
                 resolve();
             };
 
