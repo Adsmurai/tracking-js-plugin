@@ -1,26 +1,25 @@
-before_script:
-  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-  - apt-get update -qq && apt-get install -y -qq yarn 
-
 stages:
   - build
   - test-unit
   - test-functional
 
 build:
+  image: kkarczmarczyk/node-yarn
   stage: build
   script:
+    - yarn install
     - yarn build
 
 test-unit:
+  image: docker/compose
   stage: test-unit
   script:
-    - yarn test-unit
+    - ./docker/run-unit-tests
 
 test-functional:
+  image: docker/compose
   stage: test-functional
   script:
-    - yarn test-functional
+    - ./docker/run-functional-tests
 
 
