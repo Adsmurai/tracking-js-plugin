@@ -4,7 +4,9 @@
 })('AdsmuraiTracking', function(){
     const TRACKING_API_DOMAIN = window.adsmurai_tracking.TRACKING_API_DOMAIN;
 
-    const AdsmuraiTracking = function() {
+    const AdsmuraiTracking = function(trackingId, galleryId) {
+        this.trackingId = trackingId;
+        this.galleryId = galleryId;
         this.pageViewId = this.utils.uuidv4();
         this.fingerprint = {
             hash: null,
@@ -53,6 +55,9 @@
 
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
         if (this.utils.isDoNotTrackEnabled()) return;
+
+        eventData.trackingId = this.trackingId;
+        eventData.galleryId = this.galleryId;
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://' + TRACKING_API_DOMAIN + '/' + eventName);
