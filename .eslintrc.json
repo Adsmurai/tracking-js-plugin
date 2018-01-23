@@ -21,6 +21,13 @@
         "semi": [
             "error",
             "always"
+        ],
+        "space-infix-ops": [
+            "error"
+        ],
+        "space-before-function-paren": [
+            "error",
+            "never"
         ]
     }
 }
