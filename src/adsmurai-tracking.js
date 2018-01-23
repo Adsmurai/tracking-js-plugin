@@ -31,7 +31,7 @@
             if (utils.isDoNotTrackEnabled()) return;
 
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
+            xhr.open('POST', 'https://' + this.TRACKING_API_DOMAIN + '/' + eventName);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(eventData));
         },
@@ -86,8 +86,12 @@
     }
 
     function injectTracking(fingerprint) {
+        if (typeof _window.adsmurai_tracking === 'undefined') {
+            _window.adsmurai_tracking = {};
+        }
+        
         adsmurai_tracking.fingerprint = fingerprint;
-        _window.adsmurai_tracking = adsmurai_tracking;
+        _window.adsmurai_tracking = Object.assign(_window.adsmurai_tracking, adsmurai_tracking);
     }
 
 })(window);
