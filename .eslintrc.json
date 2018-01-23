@@ -21,6 +21,9 @@
         "semi": [
             "error",
             "always"
+        ],
+        "space-infix-ops": [
+            "error"
         ]
     }
 }
