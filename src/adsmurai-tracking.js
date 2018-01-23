@@ -2,8 +2,6 @@
 (function(name, definition){
     window[name] = definition();
 })('AdsmuraiTracking', function(){
-    const TRACKING_API_DOMAIN = window.adsmurai_tracking.TRACKING_API_DOMAIN;
-
     const AdsmuraiTracking = function(trackingId, galleryId) {
         this.trackingId = trackingId;
         this.galleryId = galleryId;
@@ -60,7 +58,7 @@
         eventData.galleryId = this.galleryId;
 
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://' + TRACKING_API_DOMAIN + '/' + eventName);
+        xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(eventData));
     };
