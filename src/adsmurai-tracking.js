@@ -1,7 +1,79 @@
 'use strict';
+(function(name, context, definition){
+    context[name] = definition();
+})('AdsmuraiTracking', window, function(){
+    const AdsmuraiTracking = function(trackingId, galleryId) {
+        this.trackingId = trackingId;
+        this.galleryId = galleryId;
+        this.pageViewId = this.utils.uuidv4();
+        this.fingerprint = {
+            hash: null,
+            components: null
+        };
 
-(function(_window) {
-    const utils = {
+        const _adsmuraiTracking = this;
+        loadFingerprintingJavascript()
+            .then(calculateFingerprint)
+            .then(injectTracking);
+
+        function loadFingerprintingJavascript() {
+            if (typeof(Fingerprint2) !== 'undefined') {
+                return new Promise.resolve();
+            }
+
+            const fingerprintjs2Element = document.createElement('script');
+
+            return new Promise(function(resolve) {
+                fingerprintjs2Element.onload = function() {
+                    resolve();
+                };
+
+                fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
+                document.head.appendChild(fingerprintjs2Element);
+            });
+        }
+
+        function calculateFingerprint() {
+            return new Promise(function(resolve) {
+                new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
+                    resolve({
+                        hash: fingerprintHash,
+                        components: fingerprintComponents
+                    });
+                });
+
+            });
+        }
+
+        function injectTracking(fingerprint) {
+            _adsmuraiTracking.fingerprint.hash = fingerprint.hash;
+            _adsmuraiTracking.fingerprint.components = fingerprint.components;
+        }
+    };
+
+    AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
+        if (this.utils.isDoNotTrackEnabled()) return;
+
+        eventData.trackingId = this.trackingId;
+        eventData.galleryId = this.galleryId;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(eventData));
+    };
+
+    AdsmuraiTracking.prototype.registerPageViewEvent = function() {
+        // TODO: this method should return a promise that's resolved after the servers responds
+        this.registerEvent('pageView', {
+            pageViewId: this.pageViewId,
+            url: window.location.href,
+            referrer: document.referrer,
+            fingerprint: this.fingerprint
+        });
+    };
+
+    AdsmuraiTracking.prototype.utils = {
         uuidv4: function() {
             /* Following  RFC4122 version 4 UUID. Implementation from https://stackoverflow.com/a/2117523 */
             const randomValues = new Uint32Array(32);
@@ -26,72 +98,5 @@
         }
     };
 
-    const adsmurai_tracking = {
-        registerEvent: function(eventName, eventData) {
-            if (utils.isDoNotTrackEnabled()) return;
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://' + this.TRACKING_API_DOMAIN + '/' + eventName);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify(eventData));
-        },
-        registerPageViewEvent: function() {
-            // TODO: this method should return a promise that's resolved after the servers responds
-            this.registerEvent('pageView', {
-                pageViewId: this.pageViewId,
-                url: window.location.href,
-                referrer: document.referrer,
-                fingerprint: this.fingerprint
-            });
-        },
-        pageViewId: utils.uuidv4(),
-        fingerprint: {
-            hash: null,
-            components: null
-        },
-        utils: utils
-    };
-
-    loadFingerprintingJavascript()
-        .then(calculateFingerprint)
-        .then(injectTracking);
-
-    function loadFingerprintingJavascript() {
-        if (typeof(Fingerprint2) !== 'undefined') {
-            return new Promise.resolve();
-        }
-
-        const fingerprintjs2Element = document.createElement('script');
-
-        return new Promise(function(resolve) {
-            fingerprintjs2Element.onload = function() {
-                resolve();
-            };
-
-            fingerprintjs2Element.src = 'https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.5.1/fingerprint2.min.js';
-            document.head.appendChild(fingerprintjs2Element);
-        });
-    }
-
-    function calculateFingerprint() {
-        return new Promise(function(resolve) {
-            new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
-                resolve({
-                    hash: fingerprintHash,
-                    components: fingerprintComponents
-                });
-            });
-
-        });
-    }
-
-    function injectTracking(fingerprint) {
-        if (typeof _window.adsmurai_tracking === 'undefined') {
-            _window.adsmurai_tracking = {};
-        }
-        
-        adsmurai_tracking.fingerprint = fingerprint;
-        _window.adsmurai_tracking = Object.assign(_window.adsmurai_tracking, adsmurai_tracking);
-    }
-
-})(window);
+    return AdsmuraiTracking;
+});

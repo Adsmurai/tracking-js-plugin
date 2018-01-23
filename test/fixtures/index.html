@@ -5,7 +5,17 @@
     <title>Index!</title>
 </head>
 <body>
-    <script type="text/javascript" src="adsmurai-tracking.min.js" async crossorigin="anonymous"></script>
+    <script type="text/javascript" crossorigin="anonymous">
+        const adsmuraiTrackingElement = document.createElement('script');
+        const TRACKING_ID = 'dev-tracking-id';
+        const GALLERY_ID = 'dev-gallery-id';
+        adsmuraiTrackingElement.onload = function() {
+            window.adsmurai_tracking = new AdsmuraiTracking(TRACKING_ID, GALLERY_ID);
+        };
+        adsmuraiTrackingElement.src = 'adsmurai-tracking.min.js';
+
+        document.head.appendChild(adsmuraiTrackingElement);
+    </script>
     <a href="/" id="anchor-to-root">Link to page b</a>
     <a href="/index.html" id="anchor-to-index">Link to page b</a>
     <a href="/a.html" id="anchor-to-a">Link to page b</a>
