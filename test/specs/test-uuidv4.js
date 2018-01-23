@@ -12,11 +12,10 @@ const options = {
 describe('uuidv4', function() {
     const browser = webdriverio.remote(options);
 
-    before('init browser session', function(done) {
-        browser
+    before('init browser session', function() {
+        return browser
             .init()
-            .url('https://tracking-test.adsmurai.local')
-            .then(() => done());
+            .url('https://tracking-test.adsmurai.local');
     });
 
     it('returns different uuids in different calls', function(done) {
@@ -49,10 +48,7 @@ describe('uuidv4', function() {
             .catch(done);
     });
 
-    after('finish browser session', function(done) {
-        browser
-            .end()
-            .then(() => done())
-            .catch(done);
+    after('finish browser session', function() {
+        return browser.end();
     });
 });
