@@ -1,7 +1,7 @@
 'use strict';
-(function(name, definition){
-    window[name] = definition();
-})('AdsmuraiTracking', function(){
+(function(name, context, definition){
+    context[name] = definition();
+})('AdsmuraiTracking', window, function(){
     const AdsmuraiTracking = function(trackingId, galleryId) {
         this.trackingId = trackingId;
         this.galleryId = galleryId;
