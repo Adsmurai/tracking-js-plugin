@@ -54,7 +54,9 @@
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
         if (this.utils.isDoNotTrackEnabled()) return;
 
+        eventData.fingerprint = this.fingerprint;
         eventData.trackingId = this.trackingId;
+        eventData.pageViewId = this.pageViewId;
         eventData.galleryId = this.galleryId;
 
         const xhr = new XMLHttpRequest();
@@ -66,10 +68,8 @@
     AdsmuraiTracking.prototype.registerPageViewEvent = function() {
         // TODO: this method should return a promise that's resolved after the servers responds
         this.registerEvent('pageView', {
-            pageViewId: this.pageViewId,
             url: window.location.href,
-            referrer: document.referrer,
-            fingerprint: this.fingerprint
+            referrer: document.referrer
         });
     };
 
