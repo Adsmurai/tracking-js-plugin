@@ -79,7 +79,7 @@
             const randomValues = new Uint32Array(32);
             const randomIterator = window
                 .crypto.getRandomValues(randomValues)
-                .map(x => x%16)
+                .map(x => x % 16)
                 .values();
 
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -90,9 +90,9 @@
         },
         isDoNotTrackEnabled: function() {
             return (
-                !!(navigator.doNotTrack-0)     || // Current & standard check
-                !!(window.doNotTrack-0)        || // MSIE 11 & MS Edge & Safari 7.1.3+
-                !!(navigator.msDoNotTrack-0)   || // MSIE 9 & MSIE 10
+                !!(navigator.doNotTrack - 0)     || // Current & standard check
+                !!(window.doNotTrack - 0)        || // MSIE 11 & MS Edge & Safari 7.1.3+
+                !!(navigator.msDoNotTrack - 0)   || // MSIE 9 & MSIE 10
                 'yes' === navigator.doNotTrack    // Firefox < v32.0
             );
         }

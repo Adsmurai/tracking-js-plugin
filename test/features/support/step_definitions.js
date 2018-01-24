@@ -68,7 +68,7 @@ defineSupportCode(function({Then, When}) {
         const pageViewidsCount = this.state.ajaxRequests
             .map( request => request.body.pageViewId)
             .reduce((counts, pageViewId) => {
-                counts[pageViewId] = pageViewId in counts? counts[pageViewId] + 1: 1;
+                counts[pageViewId] = pageViewId in counts ? counts[pageViewId] + 1 : 1;
                 return counts;
             }, {});
 
