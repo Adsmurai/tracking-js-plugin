@@ -88,8 +88,9 @@
         uuidv4: function() {
             /* Following  RFC4122 version 4 UUID. Implementation from https://stackoverflow.com/a/2117523 */
             const randomValues = new Uint32Array(32);
-            const randomIterator = window
-                .crypto.getRandomValues(randomValues)
+            const crypto = window.crypto || window.msCrypto;
+            const randomIterator = crypto
+                .getRandomValues(randomValues)
                 .map(x => x % 16)
                 .values();
 
