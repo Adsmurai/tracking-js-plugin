@@ -22,34 +22,27 @@ defineSupportCode(function({Then, When}) {
     });
 
     When(/^I launch a gallery view event$/, function() {
-        return browser
-            .setupInterceptor()
-            .then(function() {
-                const galleryGridWidth = 0;
-                const featuredImages = [];
-
-                return browser.execute(function(galleryGridWidth, featuredImages) {
-                    // TODO: Wait for registerPageViewEvent's promise to resolve
-                    window.adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
-                }, galleryGridWidth, featuredImages);
-            });
+        return launchRegisterGalleryViewEvent(0, []);
     });
 
-    // TODO: Extract event registration logic to common method
     When(/^I launch a gallery view event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const galleryGridWidth = eventData.galleryGridWidth;
+        const featuredImages = eventData.featuredImages;
+
+        return launchRegisterGalleryViewEvent(galleryGridWidth, featuredImages);
+    });
+
+    function launchRegisterGalleryViewEvent(galleryGridWidth, featuredImages) {
         return browser
             .setupInterceptor()
             .then(function() {
-                const eventData = JSON.parse(eventDataString);
-                const featuredImages = eventData.featuredImages;
-                const galleryGridWidth = eventData.galleryGridWidth;
-
                 return browser.execute(function(galleryGridWidth, featuredImages) {
                     // TODO: Wait for registerPageViewEvent's promise to resolve
                     window.adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
                 }, galleryGridWidth, featuredImages);
             });
-    });
+    }
 
     When(/^I launch a page view event$/, function() {
         return browser
