@@ -35,6 +35,22 @@ defineSupportCode(function({Then, When}) {
             });
     });
 
+    // TODO: Extract event registration logic to common method
+    When(/^I launch a gallery view event with payload containing '([^']*)'$/, function(eventDataString) {
+        return browser
+            .setupInterceptor()
+            .then(function() {
+                const eventData = JSON.parse(eventDataString);
+                const featuredImages = eventData.featuredImages;
+                const galleryGridWidth = eventData.galleryGridWidth;
+
+                return browser.execute(function(galleryGridWidth, featuredImages) {
+                    // TODO: Wait for registerPageViewEvent's promise to resolve
+                    window.adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
+                }, galleryGridWidth, featuredImages);
+            });
+    });
+
     When(/^I launch a page view event$/, function() {
         return browser
             .setupInterceptor()
@@ -123,6 +139,17 @@ defineSupportCode(function({Then, When}) {
     Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function(property, value, callback) {
         const payload = this.state.ajaxRequests[0].body;
         assert.equal(payload[property], value);
+        callback();
+    });
+
+    Then(/^the payload contains the eventData '([^']*)'$/, function(eventDataString, callback) {
+        const payload = this.state.ajaxRequests[0].body;
+        const eventData = JSON.parse(eventDataString);
+
+        Object.keys(eventData).forEach(function(key) {
+            assert.deepEqual(payload[key], eventData[key]);
+        });
+
         callback();
     });
 

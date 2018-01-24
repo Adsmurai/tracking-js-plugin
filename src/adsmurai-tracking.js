@@ -77,8 +77,11 @@
         });
     };
 
-    AdsmuraiTracking.prototype.registerGalleryViewEvent = function() {
-        this.registerEvent('galleryView');
+    AdsmuraiTracking.prototype.registerGalleryViewEvent = function(galleryGridWidth, featuredImages) {
+        this.registerEvent('galleryView', {
+            galleryGridWidth: galleryGridWidth,
+            featuredImages: featuredImages
+        });
     };
 
     AdsmuraiTracking.prototype.utils = {
