@@ -54,6 +54,10 @@
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
         if (this.utils.isDoNotTrackEnabled()) return;
 
+        if (typeof eventData === 'undefined') {
+            eventData = {};
+        }
+
         eventData.fingerprint = this.fingerprint;
         eventData.trackingId = this.trackingId;
         eventData.pageViewId = this.pageViewId;
@@ -71,6 +75,10 @@
             url: window.location.href,
             referrer: document.referrer
         });
+    };
+
+    AdsmuraiTracking.prototype.registerGalleryViewEvent = function() {
+        this.registerEvent('galleryView');
     };
 
     AdsmuraiTracking.prototype.utils = {
