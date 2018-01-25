@@ -1,28 +1,55 @@
-image: registry.gitlab.com/adsmurai/platform/docker-registry/js-tools:dev-8.9
+image: "alpine:3.7"
+
+before_script:
+  - |
+    function setup_script_dependencies() {
+      apk add -U openssl curl tar gzip bash ca-certificates git python2 py2-pip \
+        && pip install docker-compose ;
+    }
+    function setup_docker() {
+      if ! docker info &>/dev/null; then
+        if [ -z "$DOCKER_HOST" ]; then
+          export DOCKER_HOST='tcp://localhost:2375'
+        fi
+      fi
+    }
 
 stages:
   - build
-  - test-unit
   - test-functional
+  - test-unit
 
-.build:
+build:
+  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
   stage: build
+  cache:
+    untracked: true
   script:
     - yarn install
     - yarn build
 
 test-unit:
+  image: "docker:17.12.0-ce"
   services:
-    - docker:dind
+    - docker:17.12.0-ce-dind
   stage: test-unit
+  cache:
+    untracked: true
   script:
+    - setup_script_dependencies
+    - setup_docker
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./docker/run-unit-tests
 
 test-functional:
+  image: "docker:17.12.0-ce"
   services:
-    - docker:dind
+    - docker:17.12.0-ce-dind
   stage: test-functional
+  cache:
+    untracked: true
   script:
+    - setup_script_dependencies
+    - setup_docker
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./docker/run-functional-tests
-
-
