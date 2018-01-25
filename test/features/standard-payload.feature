@@ -15,6 +15,7 @@ Feature: Standard payload
       And the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
       And the payload's "referrer" has value ""
       And the content type is set to "application/json"
+      And no errors are registered
 
     Examples:
       | proto | page_file |

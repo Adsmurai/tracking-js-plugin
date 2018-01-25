@@ -56,13 +56,32 @@ defineSupportCode(function({Then, When}) {
     });
 
     When(/^I launch a "([^"]*)" event$/, function(eventName) {
+        if (!this.hasOwnProperty('state')) {
+            this.state = {};
+        }
+
+        if (!this.state.hasOwnProperty('eventRegistrationStatuses')) {
+            this.state.eventRegistrationStatuses = [];
+        }
+
+        const state = this.state;
         return browser
             .setupInterceptor()
             .then(function() {
-                return browser.execute(function(eventName) {
-                    // TODO: Wait for registerPageViewEvent's promise to resolve
-                    window.adsmurai_tracking.registerEvent(eventName);
-                }, eventName);
+                return  browser
+                    .executeAsync(function(eventName, done) {
+                        window
+                            .adsmurai_tracking
+                            .registerEvent(eventName)
+                            .then(() => done('resolved'))
+                            .catch(() => done('rejected'));
+                    }, eventName)
+                    .then(function(v) {
+                        state.eventRegistrationStatuses.push(v.value);
+                    })
+                    .catch(function(e) {
+                        state.eventRegistrationStatuses.push(e.value);
+                    });
             });
     });
 
@@ -131,6 +150,16 @@ defineSupportCode(function({Then, When}) {
     Then(/^the content type is set to "([^"]*)"$/, function(contentType, callback) {
         const request = this.state.ajaxRequests[0];
         assert.equal(contentType, request.headers['Content-Type']);
+        callback();
+    });
+
+    Then(/^no errors are registered$/, function(callback) {
+        const eventRegistrationErrors = this
+            .state
+            .eventRegistrationStatuses
+            .filter(status => status === 'rejected');
+
+        assert.isEmpty(eventRegistrationErrors);
         callback();
     });
 
