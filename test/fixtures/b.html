@@ -11,6 +11,7 @@
         const GALLERY_ID = 'dev-another-gallery-id';
         adsmuraiTrackingElement.onload = function() {
             window.adsmurai_tracking = new AdsmuraiTracking(TRACKING_ID, GALLERY_ID);
+            window.adsmurai_tracking.registerPageViewEvent();
         };
         adsmuraiTrackingElement.src = 'adsmurai-tracking.min.js';
 
