@@ -20,7 +20,7 @@ Feature: PageViewId preservation
     When I am on "/a.html"
       And I launch a "test" event
       And I take a snapshot of sent AJAX requests
-      And I am on "/<page_file>"
+      And I am on "/b.html"
       And I launch a "test" event
       And I take a snapshot of sent AJAX requests
     Then each request has a different "pageViewId"
