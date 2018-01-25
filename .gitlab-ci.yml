@@ -16,8 +16,7 @@ before_script:
 
 stages:
   - build
-  - test-functional
-  - test-unit
+  - test
 
 build:
   image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
@@ -28,11 +27,11 @@ build:
     - yarn install
     - yarn build
 
-test-unit:
+test:
   image: "docker:17.12.0-ce"
   services:
     - docker:17.12.0-ce-dind
-  stage: test-unit
+  stage: test
   cache:
     untracked: true
   script:
@@ -40,16 +39,4 @@ test-unit:
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./docker/run-unit-tests
-
-test-functional:
-  image: "docker:17.12.0-ce"
-  services:
-    - docker:17.12.0-ce-dind
-  stage: test-functional
-  cache:
-    untracked: true
-  script:
-    - setup_script_dependencies
-    - setup_docker
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./docker/run-functional-tests
