@@ -12,50 +12,9 @@ Feature: Standard payload
       And I launch a "test" event
       And I take a snapshot of sent AJAX requests
     Then the payload's "trackingId" has value "dev-tracking-id"
-
-    Examples:
-      | proto | page_file |
-      | http  | a.html    |
-      | https | a.html    |
-      | http  | b.html    |
-      | https | b.html    |
-
-
-  Scenario Outline: Pristine window
-    Given I browse "<proto>://tracking-test.adsmurai.local"
-    When I am on "/<page_file>"
-      And I launch a "test" event
-      And I take a snapshot of sent AJAX requests
-    Then the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
-
-    Examples:
-      | proto | page_file |
-      | http  | a.html    |
-      | https | a.html    |
-      | http  | b.html    |
-      | https | b.html    |
-
-  Scenario Outline: Pristine window
-    Given I browse "<proto>://tracking-test.adsmurai.local"
-    When I am on "/<page_file>"
-      And I launch a "test" event
-      And I take a snapshot of sent AJAX requests
-    Then the payload's "referrer" has value ""
-
-    Examples:
-      | proto | page_file |
-      | http  | a.html    |
-      | https | a.html    |
-      | http  | b.html    |
-      | https | b.html    |
-
-
-  Scenario Outline: Pristine window
-    Given I browse "<proto>://tracking-test.adsmurai.local"
-    When I am on "/<page_file>"
-      And I launch a "test" event
-      And I take a snapshot of sent AJAX requests
-    Then the content type is set to "application/json"
+      And the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
+      And the payload's "referrer" has value ""
+      And the content type is set to "application/json"
 
     Examples:
       | proto | page_file |
