@@ -9,8 +9,8 @@ Feature: PageViewId preservation
   Scenario: Different events from same page view have the same pageViewId
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
-      And I launch a page view event
-      And I launch a page view event
+      And I launch a "test" event
+      And I launch a "test" event
       And I take a snapshot of sent AJAX requests
     Then all collected requests have the same pageViewId
 
@@ -18,9 +18,9 @@ Feature: PageViewId preservation
   Scenario: Events from different page views have different pageViewIds
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
-      And I launch a page view event
+      And I launch a "test" event
       And I take a snapshot of sent AJAX requests
-      And I am on "/<page_file>"
-      And I launch a page view event
+      And I am on "/b.html"
+      And I launch a "test" event
       And I take a snapshot of sent AJAX requests
     Then each request has a different "pageViewId"

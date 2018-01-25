@@ -12,10 +12,6 @@ Feature: Page View tracking
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/pageView"
-      And the payload has property "pageViewId"
-      And the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
-      And the payload's "referrer" has value ""
-      And the payload's "trackingId" has value "dev-tracking-id"
       And the content type is set to "application/json"
 
     Examples:
@@ -24,22 +20,3 @@ Feature: Page View tracking
       | https | a.html    |
       | http  | b.html    |
       | https | b.html    |
-
-  Scenario Outline: Referrer gets tracked
-    Given I browse "https://<origin_host>"
-      And I am on "<origin_path>"
-      And I follow "a[href='<destination_path>']"
-      And I launch a page view event
-      And I take a snapshot of sent AJAX requests
-    Then the payload's "referrer" has value "https://<origin_host><origin_path>"
-
-    Examples:
-      | origin_host                          | origin_path | destination_path |
-      | tracking-test.adsmurai.local         | /           | /                |
-      | tracking-test.adsmurai.local         | /           | /a.html          |
-      | tracking-test.adsmurai.local         | /a.html     | /                |
-      | tracking-test.adsmurai.local         | /a.html     | /b.html          |
-      | tracking-test-bis.adsmurai.local     | /           | /                |
-      | tracking-test-bis.adsmurai.local     | /           | /a.html          |
-      | tracking-test-bis.adsmurai.local     | /a.html     | /                |
-      | tracking-test-bis.adsmurai.local     | /a.html     | /b.html          |

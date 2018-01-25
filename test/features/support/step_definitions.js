@@ -55,6 +55,17 @@ defineSupportCode(function({Then, When}) {
             });
     });
 
+    When(/^I launch a "([^"]*)" event$/, function(eventName) {
+        return browser
+            .setupInterceptor()
+            .then(function() {
+                return browser.execute(function(eventName) {
+                    // TODO: Wait for registerPageViewEvent's promise to resolve
+                    window.adsmurai_tracking.registerEvent(eventName);
+                }, eventName);
+            });
+    });
+
     When(/^I take a snapshot of sent AJAX requests$/, function() {
         if (!this.hasOwnProperty('state')) {
             this.state = {};
