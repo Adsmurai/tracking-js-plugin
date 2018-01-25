@@ -6,7 +6,7 @@ source "${BASHLIB_DIR}/commonLib.sh"
 
 # This block will ensure that we clean the system after running the dockerized cucumber command
 function finish {
-    docker-compose -f "${SCRIPT_DIR}/tests-docker-compose.yml" down --volumes               &> ${DEBUG_OUTPUT_FILE} ;
+    docker-compose -f "${SCRIPT_DIR}/tests-docker-compose.yml" down --volumes                  &> ${DEBUG_OUTPUT_FILE} ;
     docker network rm "${TEST_NETWORK_NAME}"                                                   &> ${DEBUG_OUTPUT_FILE} ;
     exit ${TEST_STATUS:-1}
 }
@@ -15,7 +15,7 @@ trap finish EXIT ;
 # Setting up the testing environment
 export TEST_NETWORK_NAME="${PRJ_NAME}_test_${RANDOM_SUFFIX}"
 docker network create --driver bridge "${TEST_NETWORK_NAME}"                                &> ${DEBUG_OUTPUT_FILE} && \
-yarn build --env.devMode                                                                    &> ${DEBUG_OUTPUT_FILE} && \
+scall "${SCRIPT_DIR}/yarn" build --env.devMode                                              &> ${DEBUG_OUTPUT_FILE} && \
                                                                                                                        \
 PRJ_DIR="${PRJ_DIR}"                                                                                                   \
 RANDOM_SUFFIX="${RANDOM_SUFFIX}"                                                                                       \
