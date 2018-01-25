@@ -6,11 +6,13 @@
 </head>
 <body>
     <script type="text/javascript" crossorigin="anonymous">
-        const adsmuraiTrackingElement = document.createElement('script');
         const TRACKING_ID = 'dev-tracking-id';
         const GALLERY_ID = 'dev-gallery-id';
+
+        const adsmuraiTrackingElement = document.createElement('script');
         adsmuraiTrackingElement.onload = function() {
             window.adsmurai_tracking = new AdsmuraiTracking(TRACKING_ID, GALLERY_ID);
+            window.adsmurai_tracking.registerPageViewEvent();
         };
         adsmuraiTrackingElement.src = 'adsmurai-tracking.min.js';
 
