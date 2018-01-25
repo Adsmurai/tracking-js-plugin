@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
+
 run(){
-    declare -r SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
-    "${SCRIPT_DIR}/run-unit-tests"
-    declare -r UNIT_TEST_STATUS=$?
+    declare -r script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
+    declare bashlib_dir="${script_dir}/bashLib"
+    source "${bashlib_dir}/commonLib.sh"
 
-    "${SCRIPT_DIR}/run-functional-tests"
-    declare -r FUNCTIONAL_TEST_STATUS=$?
+    scall "${script_dir}/run-unit-tests"
+    declare -r unit_test_status=$?
 
-    declare -r TEST_STATUS=$(( $FUNCTIONAL_TEST_STATUS | $UNIT_TEST_STATUS ))
-    return ${TEST_STATUS}
+    scall "${script_dir}/run-functional-tests"
+    declare -r functional_test_status=$?
+
+    declare -r test_status=$(( $functional_test_status | $unit_test_status ))
+    return ${test_status}
 }
 run "$@"

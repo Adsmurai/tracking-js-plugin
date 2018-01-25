@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+run() {
+    declare -r _saved_variables="$(declare -px)"
+    declare -r script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
+    declare -r bashlib_dir="${script_dir}/bashLib"
+
+    source "${bashlib_dir}/commonLib.sh"
+
+    docker run                                                                                                         \
+        --rm                                                                                                           \
+        --name "yarn_${RANDOM_SUFFIX}"                                                                                 \
+        -${TERMINAL_MODE}                                                                                              \
+        -e HOST_USER_ID="${HOST_USER_ID}"                                                                              \
+        -e HOST_GROUP_ID="${HOST_GROUP_ID}"                                                                            \
+        -v "${PRJ_DIR}:/data"                                                                                          \
+        -w "/data${REL_DIR}"                                                                                           \
+        registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9 yarn "$@"                                 ;
+
+    declare -r _process_status=$?
+    eval "${_saved_variables}"
+    return ${_process_status}
+}
+run "$@"

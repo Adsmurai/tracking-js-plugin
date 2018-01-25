@@ -3,15 +3,24 @@
 ########################################################################################################################
 # Colors                                                                                                               #
 ########################################################################################################################
-bold=$(tput bold)
-underline=$(tput sgr 0 1)
-reset=$(tput sgr0)
 
-purple=$(tput setaf 171)
-red=$(tput setaf 1)
-green=$(tput setaf 76)
-tan=$(tput setaf 3)
-blue=$(tput setaf 38)
+# Based on: https://misc.flogisoft.com/bash/tip_colors_and_formatting
+#   - The command `tput setaf NUMBER` prints a bytes sequence that changes the foreground color using the NUMBERth color
+#     in the documented 256-color palette.
+#   - The command `tput setab NUMBER` prints a bytes sequence that changes the background color using the NUMBERth color
+#     in the documented 256-color palette.
+#   - We directly use the hexadecimal sequences because the `tput` command is not available in many systems by default.
+#   - We can translate the tput bytes sequence to hexadecimal codes by using the `xxd` command.
+
+bold=$(printf "\x1B\x5B\x31\x6D")
+underline=$(printf "\x1B\x5B\x30\x3B\x34\x6D\x0F")
+reset=$(printf "\x1B\x5B\x6D\x0F")
+
+purple=$(printf "\x1B\x5B\x33\x38\x3B\x35\x3B\x31\x37\x31\x6D")
+red=$(printf "\x1B\x5B\x33\x31\x6D")
+green=$(printf "\x1b\x5b\x33\x38\x3b\x35\x3b\x37\x36\x6d")
+tan=$(printf "\x1B\x5B\x33\x33\x6D")
+blue=$(printf "\x1B\x5B\x33\x38\x3B\x35\x3B\x33\x38\x6D")
 
 ########################################################################################################################
 # Headers and Logging                                                                                                  #
