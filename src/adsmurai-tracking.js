@@ -52,29 +52,26 @@
     };
 
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
+        // TODO: this method should return a promise that's resolved after the servers responds
         if (this.utils.isDoNotTrackEnabled()) return;
 
-        if (typeof eventData === 'undefined') {
-            eventData = {};
-        }
-
-        eventData.fingerprint = this.fingerprint;
-        eventData.trackingId = this.trackingId;
-        eventData.pageViewId = this.pageViewId;
-        eventData.galleryId = this.galleryId;
+        const payload = Object.assign({
+            fingerprint: this.fingerprint,
+            trackingId: this.trackingId,
+            pageViewId: this.pageViewId,
+            galleryId: this.galleryId,
+            url: window.location.href,
+            referrer: document.referrer
+        }, eventData);
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(eventData));
+        xhr.send(JSON.stringify(payload));
     };
 
     AdsmuraiTracking.prototype.registerPageViewEvent = function() {
-        // TODO: this method should return a promise that's resolved after the servers responds
-        this.registerEvent('pageView', {
-            url: window.location.href,
-            referrer: document.referrer
-        });
+        this.registerEvent('pageView');
     };
 
     AdsmuraiTracking.prototype.registerGalleryViewEvent = function(galleryGridWidth, featuredImages) {
