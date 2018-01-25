@@ -7,12 +7,19 @@ const options = {
     },
     host: 'tracking-selenium-hub.sandbox',
     port: 4444,
+
+    sync: false,
+    waitforTimeout: 10000,
+    connectionRetryCount: 3
 };
 
 describe('uuidv4', function() {
     const browser = webdriverio.remote(options);
 
     before('init browser session', function() {
+        this.retries(3);
+        this.timeout(10000);
+
         return browser
             .init()
             .url('https://tracking-test.adsmurai.local');
