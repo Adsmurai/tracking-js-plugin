@@ -23,4 +23,4 @@ Feature: PageViewId preservation
       And I am on "/<page_file>"
       And I launch a page view event
       And I take a snapshot of sent AJAX requests
-    Then each request has a different pageViewId
+    Then each request has a different "pageViewId"

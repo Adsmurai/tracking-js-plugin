@@ -21,6 +21,29 @@ defineSupportCode(function({Then, When}) {
             });
     });
 
+    When(/^I launch a gallery view event$/, function() {
+        return launchRegisterGalleryViewEvent(0, []);
+    });
+
+    When(/^I launch a gallery view event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const galleryGridWidth = eventData.galleryGridWidth;
+        const featuredImages = eventData.featuredImages;
+
+        return launchRegisterGalleryViewEvent(galleryGridWidth, featuredImages);
+    });
+
+    function launchRegisterGalleryViewEvent(galleryGridWidth, featuredImages) {
+        return browser
+            .setupInterceptor()
+            .then(function() {
+                return browser.execute(function(galleryGridWidth, featuredImages) {
+                    // TODO: Wait for registerPageViewEvent's promise to resolve
+                    window.adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
+                }, galleryGridWidth, featuredImages);
+            });
+    }
+
     When(/^I launch a page view event$/, function() {
         return browser
             .setupInterceptor()
@@ -64,16 +87,16 @@ defineSupportCode(function({Then, When}) {
         callback();
     });
 
-    Then(/^each request has a different pageViewId$/, function(callback) {
-        const pageViewidsCount = this.state.ajaxRequests
-            .map( request => request.body.pageViewId)
-            .reduce((counts, pageViewId) => {
-                counts[pageViewId] = pageViewId in counts? counts[pageViewId] + 1: 1;
+    Then(/^each request has a different "([^"]*)"$/, function(key, callback) {
+        const galleryIdsCount = this.state.ajaxRequests
+            .map( request => request.body[key])
+            .reduce((counts, value) => {
+                counts[value] = value in counts ? counts[value] + 1 : 1;
                 return counts;
             }, {});
 
         const maxRepetitions = Object
-            .values(pageViewidsCount)
+            .values(galleryIdsCount)
             .reduce((a,b) => Math.max(a,b), 0);
 
         assert.equal(maxRepetitions, 1);
@@ -109,6 +132,17 @@ defineSupportCode(function({Then, When}) {
     Then(/^the payload's "([^"]*)" has value "([^"]*)"$/, function(property, value, callback) {
         const payload = this.state.ajaxRequests[0].body;
         assert.equal(payload[property], value);
+        callback();
+    });
+
+    Then(/^the payload contains the eventData '([^']*)'$/, function(eventDataString, callback) {
+        const payload = this.state.ajaxRequests[0].body;
+        const eventData = JSON.parse(eventDataString);
+
+        Object.keys(eventData).forEach(function(key) {
+            assert.deepEqual(payload[key], eventData[key]);
+        });
+
         callback();
     });
 

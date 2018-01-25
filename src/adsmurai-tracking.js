@@ -54,7 +54,13 @@
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
         if (this.utils.isDoNotTrackEnabled()) return;
 
+        if (typeof eventData === 'undefined') {
+            eventData = {};
+        }
+
+        eventData.fingerprint = this.fingerprint;
         eventData.trackingId = this.trackingId;
+        eventData.pageViewId = this.pageViewId;
         eventData.galleryId = this.galleryId;
 
         const xhr = new XMLHttpRequest();
@@ -66,10 +72,15 @@
     AdsmuraiTracking.prototype.registerPageViewEvent = function() {
         // TODO: this method should return a promise that's resolved after the servers responds
         this.registerEvent('pageView', {
-            pageViewId: this.pageViewId,
             url: window.location.href,
-            referrer: document.referrer,
-            fingerprint: this.fingerprint
+            referrer: document.referrer
+        });
+    };
+
+    AdsmuraiTracking.prototype.registerGalleryViewEvent = function(galleryGridWidth, featuredImages) {
+        this.registerEvent('galleryView', {
+            galleryGridWidth: galleryGridWidth,
+            featuredImages: featuredImages
         });
     };
 
@@ -79,7 +90,7 @@
             const randomValues = new Uint32Array(32);
             const randomIterator = window
                 .crypto.getRandomValues(randomValues)
-                .map(x => x%16)
+                .map(x => x % 16)
                 .values();
 
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -90,9 +101,9 @@
         },
         isDoNotTrackEnabled: function() {
             return (
-                !!(navigator.doNotTrack-0)     || // Current & standard check
-                !!(window.doNotTrack-0)        || // MSIE 11 & MS Edge & Safari 7.1.3+
-                !!(navigator.msDoNotTrack-0)   || // MSIE 9 & MSIE 10
+                !!(navigator.doNotTrack - 0)     || // Current & standard check
+                !!(window.doNotTrack - 0)        || // MSIE 11 & MS Edge & Safari 7.1.3+
+                !!(navigator.msDoNotTrack - 0)   || // MSIE 9 & MSIE 10
                 'yes' === navigator.doNotTrack    // Firefox < v32.0
             );
         }
