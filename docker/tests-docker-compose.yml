@@ -58,7 +58,6 @@ services:
     environment:
       - HOST_USER_ID
       - HOST_GROUP_ID
-      - CUCUMBER_PARAMS
     depends_on:
       - tracking-nginx-test
       - tracking-selenium-hub
@@ -78,7 +77,6 @@ services:
     environment:
       - HOST_USER_ID
       - HOST_GROUP_ID
-      - MOCHA_PARAMS
     depends_on:
       - tracking-nginx-test
       - tracking-selenium-hub
@@ -87,3 +85,22 @@ services:
       - "bash"
       - "-c"
       - "test -n \"${CI_PIPELINE_ID}\" && sleep 5 || : ; yarn test-unit"
+
+  all-tests-command:
+    image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+    container_name: tracking_cucumber_${RANDOM_SUFFIX}
+    hostname: tracking_cucumber
+    volumes:
+      - "${PRJ_DIR}:/data"
+    working_dir: "/data"
+    environment:
+      - HOST_USER_ID
+      - HOST_GROUP_ID
+    depends_on:
+      - tracking-nginx-test
+      - tracking-selenium-hub
+      - tracking-selenium-chrome
+    command:
+      - "bash"
+      - "-c"
+      - "test -n \"${CI_PIPELINE_ID}\" && sleep 5 || : ; yarn test-unit && yarn test-functional"
