@@ -64,8 +64,9 @@ services:
       - tracking-selenium-hub
       - tracking-selenium-chrome
     command:
-      - "yarn"
-      - "test-functional"
+      - "bash"
+      - "-c"
+      - "test -n \"${CI_PIPELINE_ID}\" && sleep 5 || : ; yarn test-functional"
 
   unit-test-command:
     image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
@@ -83,5 +84,6 @@ services:
       - tracking-selenium-hub
       - tracking-selenium-chrome
     command:
-      - "yarn"
-      - "test-unit"
+      - "bash"
+      - "-c"
+      - "test -n \"${CI_PIPELINE_ID}\" && sleep 5 || : ; yarn test-unit"
