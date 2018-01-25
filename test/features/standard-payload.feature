@@ -20,6 +20,7 @@ Feature: Standard payload
       | http  | b.html    |
       | https | b.html    |
 
+
   Scenario Outline: Pristine window
     Given I browse "<proto>://tracking-test.adsmurai.local"
     When I am on "/<page_file>"
@@ -47,6 +48,22 @@ Feature: Standard payload
       | https | a.html    |
       | http  | b.html    |
       | https | b.html    |
+
+
+  Scenario Outline: Pristine window
+    Given I browse "<proto>://tracking-test.adsmurai.local"
+    When I am on "/<page_file>"
+      And I launch a "test" event
+      And I take a snapshot of sent AJAX requests
+    Then the content type is set to "application/json"
+
+    Examples:
+      | proto | page_file |
+      | http  | a.html    |
+      | https | a.html    |
+      | http  | b.html    |
+      | https | b.html    |
+
 
   Scenario Outline: A link has been followed
     Given I browse "https://<origin_host>"
