@@ -40,5 +40,4 @@ test:
     - setup_script_dependencies
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - ./docker/run-unit-tests
-    - ./docker/run-functional-tests
+    - ./docker/run-all-tests
