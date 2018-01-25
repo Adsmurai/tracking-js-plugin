@@ -15,7 +15,6 @@ Feature: Page View tracking
       And the payload has property "pageViewId"
       And the payload's "url" has value "<proto>://tracking-test.adsmurai.local/<page_file>"
       And the payload's "referrer" has value ""
-      And the payload's "trackingId" has value "dev-tracking-id"
       And the content type is set to "application/json"
 
     Examples:
