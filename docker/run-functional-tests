@@ -20,7 +20,6 @@ scall "${SCRIPT_DIR}/yarn" build --env.devMode                                  
 PRJ_DIR="${PRJ_DIR}"                                                                                                   \
 RANDOM_SUFFIX="${RANDOM_SUFFIX}"                                                                                       \
 TEST_NETWORK_NAME="${TEST_NETWORK_NAME}"                                                                               \
-CUCUMBER_PARAMS="$@"                                                                                                   \
 docker-compose -f "${SCRIPT_DIR}/tests-docker-compose.yml"                                                             \
                run --rm ${DOCKER_RUN_TERMINAL_MODE} functional-test-command                                            ;
 TEST_STATUS=$?
