@@ -3,7 +3,14 @@
 const { defineSupportCode } = require('cucumber');
 const { assert } = require('chai');
 
-defineSupportCode(function({Then, When}) {
+defineSupportCode(function({Before, When, Then}) {
+    Before(function() {
+        this.state = {
+            eventRegistrationStatuses: [],
+            ajaxRequests: []
+        };
+    });
+
     When(/^I enable the doNotTrack feature$/, function() {
         // The aim of this step is to check how we behave once we know that the doNotTrack property is enabled, not to
         // check if we are able to know if this property is enabled or not.
@@ -22,7 +29,7 @@ defineSupportCode(function({Then, When}) {
     });
 
     When(/^I launch a gallery view event$/, function() {
-        return launchRegisterGalleryViewEvent(0, []);
+        return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
 
     When(/^I launch a gallery view event with payload containing '([^']*)'$/, function(eventDataString) {
@@ -30,70 +37,30 @@ defineSupportCode(function({Then, When}) {
         const galleryGridWidth = eventData.galleryGridWidth;
         const featuredImages = eventData.featuredImages;
 
-        return launchRegisterGalleryViewEvent(galleryGridWidth, featuredImages);
+        return launchRegisterGalleryViewEvent(this.state, galleryGridWidth, featuredImages);
     });
 
-    function launchRegisterGalleryViewEvent(galleryGridWidth, featuredImages) {
-        return browser
-            .setupInterceptor()
-            .then(function() {
-                return browser.execute(function(galleryGridWidth, featuredImages) {
-                    // TODO: Wait for registerPageViewEvent's promise to resolve
-                    window.adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
-                }, galleryGridWidth, featuredImages);
-            });
-    }
-
     When(/^I launch a page view event$/, function() {
-        return browser
-            .setupInterceptor()
-            .then(function() {
-                return browser.execute(function() {
-                    // TODO: Wait for registerPageViewEvent's promise to resolve
-                    window.adsmurai_tracking.registerPageViewEvent();
-                });
-            });
+        return executeInBrowser(this.state, function(done) {
+            window
+                .adsmurai_tracking
+                .registerPageViewEvent()
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        });
     });
 
     When(/^I launch a "([^"]*)" event$/, function(eventName) {
-        if (!this.hasOwnProperty('state')) {
-            this.state = {};
-        }
-
-        if (!this.state.hasOwnProperty('eventRegistrationStatuses')) {
-            this.state.eventRegistrationStatuses = [];
-        }
-
-        const state = this.state;
-        return browser
-            .setupInterceptor()
-            .then(function() {
-                return  browser
-                    .executeAsync(function(eventName, done) {
-                        window
-                            .adsmurai_tracking
-                            .registerEvent(eventName)
-                            .then(() => done('resolved'))
-                            .catch(() => done('rejected'));
-                    }, eventName)
-                    .then(function(v) {
-                        state.eventRegistrationStatuses.push(v.value);
-                    })
-                    .catch(function(e) {
-                        state.eventRegistrationStatuses.push(e.value);
-                    });
-            });
+        return executeInBrowser(this.state, function(eventName, done) {
+            window
+                .adsmurai_tracking
+                .registerEvent(eventName)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, eventName);
     });
 
     When(/^I take a snapshot of sent AJAX requests$/, function() {
-        if (!this.hasOwnProperty('state')) {
-            this.state = {};
-        }
-
-        if (!this.state.hasOwnProperty('ajaxRequests')) {
-            this.state.ajaxRequests = [];
-        }
-
         const state = this.state;
         return browser
             .getRequests()
@@ -178,8 +145,8 @@ defineSupportCode(function({Then, When}) {
     });
 
     Then(/^the payload contains the eventData '([^']*)'$/, function(eventDataString, callback) {
-        const payload = this.state.ajaxRequests[0].body;
         const eventData = JSON.parse(eventDataString);
+        const payload = this.state.ajaxRequests[0].body;
 
         Object.keys(eventData).forEach(function(key) {
             assert.deepEqual(payload[key], eventData[key]);
@@ -195,9 +162,34 @@ defineSupportCode(function({Then, When}) {
             .every(value => value === referenceValue);
     }
 
+    function executeInBrowser(state, script, ...args) {
+        return browser
+            .setupInterceptor()
+            .then(function() {
+                return  browser
+                    .executeAsync(script, ...args)
+                    .then(function(v) {
+                        state.eventRegistrationStatuses.push(v.value);
+                    })
+                    .catch(function(e) {
+                        state.eventRegistrationStatuses.push(e.value);
+                    });
+            });
+    }
+
     function getEventRegistrationErrors(state) {
         return state
             .eventRegistrationStatuses
             .filter(status => status === 'rejected');
+    }
+
+    function launchRegisterGalleryViewEvent(state, galleryGridWidth, featuredImages) {
+        return executeInBrowser(state, function(galleryGridWidth, featuredImages, done) {
+            window
+                .adsmurai_tracking
+                .registerGalleryViewEvent(galleryGridWidth, featuredImages)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, galleryGridWidth, featuredImages);
     }
 });
