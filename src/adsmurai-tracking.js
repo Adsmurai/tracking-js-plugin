@@ -1,7 +1,7 @@
 'use strict';
-(function(name, context, definition){
+(function(name, context, definition) {
     context[name] = definition();
-})('AdsmuraiTracking', window, function(){
+})('AdsmuraiTracking', window, function() {
     const AdsmuraiTracking = function(trackingId, galleryId) {
         this.trackingId = trackingId;
         this.galleryId = galleryId;
@@ -35,7 +35,7 @@
 
         function calculateFingerprint() {
             return new Promise(function(resolve) {
-                new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
+                new Fingerprint2().get(function(fingerprintHash, fingerprintComponents) {
                     resolve({
                         hash: fingerprintHash,
                         components: fingerprintComponents
@@ -67,7 +67,7 @@
         xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve, reject) {
             xhr.onload = function() {
                 if (xhr.status < 200 || xhr.status >= 300) {
                     reject({status: xhr.status});
