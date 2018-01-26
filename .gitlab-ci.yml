@@ -13,10 +13,16 @@ before_script:
         fi
       fi
     }
+    function publish_to_npm() {
+      GIT_TAG=`git describe --tags --exact-match 2> /dev/null | cat`
+      test -n "$GIT_TAG" \
+        && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public
+    }
 
 stages:
   - build
   - test
+  - deploy
 
 build:
   image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
@@ -41,3 +47,14 @@ test:
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./docker/run-all-tests
+
+deploy:
+  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+  stage: deploy
+  only:
+    - master
+  cache:
+    untracked: true
+  script:
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - publish_to_npm
