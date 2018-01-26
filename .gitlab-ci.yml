@@ -22,17 +22,8 @@ before_script:
     }
 
 stages:
-  - build
   - test
   - deploy
-
-build:
-  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
-  stage: build
-  cache:
-    untracked: true
-  script:
-    - yarn install
 
 test:
   image: "docker:17.12.0-ce"
@@ -47,6 +38,7 @@ test:
     - setup_script_dependencies
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - ./docker/yarn install
     - ./docker/run-all-tests
 
 deploy:
