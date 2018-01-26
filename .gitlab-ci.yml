@@ -52,7 +52,9 @@ deploy:
   image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
   stage: deploy
   only:
-    - master
+    - tags
+  except:
+    - branches
   cache:
     untracked: true
   script:
