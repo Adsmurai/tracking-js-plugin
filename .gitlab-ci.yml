@@ -16,7 +16,9 @@ before_script:
     function publish_to_npm() {
       GIT_TAG=`git describe --tags --exact-match 2> /dev/null | cat`
       test -n "$GIT_TAG" \
-        && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public
+        && test "$GIT_TAG" = `jq '.version' package.json` \
+        && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public \
+        || : ;
     }
 
 stages:
@@ -31,7 +33,6 @@ build:
     untracked: true
   script:
     - yarn install
-    - yarn build
 
 test:
   image: "docker:17.12.0-ce"
@@ -59,4 +60,5 @@ deploy:
     untracked: true
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - yarn build
     - publish_to_npm
