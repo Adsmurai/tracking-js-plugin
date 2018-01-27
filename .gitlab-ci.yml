@@ -32,8 +32,10 @@ test:
   services:
     - docker:17.12.0-ce-dind
   stage: test
-  cache:
-    untracked: true
+  only:
+    - branches
+  except:
+    - tags
   script:
     - setup_script_dependencies
     - setup_docker
@@ -41,16 +43,27 @@ test:
     - ./docker/yarn install
     - ./docker/run-all-tests
 
-deploy:
+npm_deploy:
   image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
   stage: deploy
   only:
     - tags
   except:
     - branches
-  cache:
-    untracked: true
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - yarn install
     - yarn build
     - publish_to_npm
+
+s3_deploy:
+  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+  stage: deploy
+  only:
+    - master
+  except:
+    - tags
+  script:
+    - yarn install
+    - yarn build
+    - echo "S3 deploy placeholder"
