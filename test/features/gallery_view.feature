@@ -1,4 +1,3 @@
-# TODO: Change the "As a" field
 Feature: Gallery View tracking
   In order to track gallery view events
   As a web page owner
@@ -17,7 +16,7 @@ Feature: Gallery View tracking
     Then each request has a different "galleryId"
 
 
-  Scenario: Requests are sent to the adecuate endpoint
+  Scenario: Requests are sent to the adequate endpoint
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
       And I launch a gallery view event
