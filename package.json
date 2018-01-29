@@ -1,6 +1,6 @@
 {
   "name": "adsmurai-tracker",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Javascript plugin to enable behaviour tracking.",
   "main": "dist/adsmurai-tracking.min.js",
   "repository": "https://github.com/Adsmurai/tracking-js-plugin.git",
