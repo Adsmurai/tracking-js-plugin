@@ -40,6 +40,16 @@ defineSupportCode(function({Before, When, Then}) {
         return launchRegisterGalleryViewEvent(this.state, galleryGridWidth, featuredImages);
     });
 
+    When(/^I launch an image click event$/, function() {
+        return launchUgcImageClickEvent(this.state);
+    });
+
+    When(/^I launch an image click event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const ugcImage = eventData;
+        return launchUgcImageClickEvent(this.state, ugcImage);
+    });
+
     When(/^I launch a page view event$/, function() {
         return executeInBrowser(this.state, function(done) {
             window
@@ -191,5 +201,15 @@ defineSupportCode(function({Before, When, Then}) {
                 .then(() => done('resolved'))
                 .catch(() => done('rejected'));
         }, galleryGridWidth, featuredImages);
+    }
+
+    function launchUgcImageClickEvent(state, ugcImage) {
+        return executeInBrowser(state, function(ugcImage, done) {
+            window
+                .adsmurai_tracking
+                .registerUgcClickEvent(ugcImage)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, ugcImage);
     }
 });
