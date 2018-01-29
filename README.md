@@ -10,27 +10,35 @@
 * To install this script through YARN:
   `yarn add adsmurai-tracker`.
   
- ### Initialization
- Copy this snippet anywhere inside the `<body>` tag of your html file to add 
- the script to your page and initialize it.
+### Initialization
+Copy this snippet anywhere inside the `<body>` tag of your html file to add
+the script to your page and initialize it. The `'TRACKING_ID'` and
+`'GALLERY_ID'` values must be substituted by the ones provided by Adsmurai.
  
  ```html
 <script type="text/javascript" crossorigin="anonymous">
-    const TRACKING_ID = 'dev-tracking-id';
-    const GALLERY_ID = 'dev-gallery-id';
-    
     const adsmuraiTrackingElement = document.createElement('script');
     adsmuraiTrackingElement.onload = function() {
-        window.adsmurai_tracking = new AdsmuraiTracking(TRACKING_ID, GALLERY_ID);
+        window.adsmurai_tracking = new AdsmuraiTracking('TRACKING_ID', 'GALLERY_ID');
         window.adsmurai_tracking.registerPageViewEvent();
     };
     adsmuraiTrackingElement.src = 'adsmurai-tracking.min.js';
-
-    document.head.appendChild(adsmuraiTrackingElement);
+    document.body.appendChild(adsmuraiTrackingElement);
 </script>
 ```
 
-### Usage
+## Usage (available event triggers)
+
+### `adsmurai_tracking.registerPageViewEvent`
+This event is automatically triggered on every page load. **Don't trigger it on
+your own.** It must be triggered one single time per page view.
+
+### `adsmurai_tracking.registerGalleryViewEvent`
+
+This event can be manually triggered each time a gallery is loaded. *If you are
+a gallery user (but not a gallery developer) then you don't have to worry about
+this event.*
+
 From a `<script>` tag:
 ```js
 const galleryGridWidth = ...;
@@ -39,6 +47,9 @@ adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
 ```
 
 ## Build process
+
+*This section is only for people actively developing this JS plugin. So if you
+only care about how to use it, you can save your precious time.*
 
 In order to use this plugin, you must build it with the following command:
 ```bash
@@ -51,12 +62,3 @@ The results will be in the `./dist` directory:
   * `adsmurai-tracking.lite.min.js` - This version assumes that the
      FingerprintJS2 library is previously loaded, if not then it dynamically
      inserts the script into the DOM.
-
-## Available event triggers
-
-  * `adsmurai_tracking.registerPageViewEvent`: This event is automatically
-    triggered on every page load. **Don't trigger it on your own.** It must be
-    triggered one single time per page view.
-    
-  * `adsmurai_tracking.registerGalleryViewEvent`: This event can be manually 
-    triggered each time a gallery is loaded.
