@@ -45,7 +45,7 @@ test:
     - setup_test_dependencies
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - ./docker/yarn install
+    - ./docker/yarn install --no-progress
     - ./docker/run-all-tests
 
 npm_deploy:
@@ -59,7 +59,7 @@ npm_deploy:
     - branches
   script:
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
-    - yarn install
+    - yarn install --no-progress
     - yarn build
     - publish_to_npm
 
@@ -76,6 +76,8 @@ s3_deploy:
     - tags
   script:
     - setup_aws
-    - ./docker/yarn install
+    - setup_docker
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - ./docker/yarn install --no-progress
     - ./docker/yarn build
     - aws s3 cp dist s3://com.adsmurai.js.libs --recursive --acl public-read
