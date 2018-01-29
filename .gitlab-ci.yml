@@ -2,7 +2,7 @@ image: "alpine:3.7"
 
 before_script:
   - |
-    function setup_script_dependencies() {
+    function setup_test_dependencies() {
       apk add -U openssl curl tar gzip bash ca-certificates git python2 py2-pip \
         && pip install docker-compose ;
     }
@@ -19,6 +19,10 @@ before_script:
         && test "$GIT_TAG" = `jq '.version' package.json` \
         && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public \
         || : ;
+    }
+    function setup_aws() {
+      apk add -U openssl curl tar gzip bash ca-certificates python2 py2-pip \
+        && pip install awscli ;
     }
 
 stages:
@@ -37,7 +41,7 @@ test:
   except:
     - tags
   script:
-    - setup_script_dependencies
+    - setup_test_dependencies
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - ./docker/yarn install
@@ -64,6 +68,7 @@ s3_deploy:
   except:
     - tags
   script:
+    - setup_aws
     - yarn install
     - yarn build
-    - echo "S3 deploy placeholder"
+    - aws s3 cp dist s3://com.adsmurai.js.libs --recursive --acl public-read
