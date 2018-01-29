@@ -1,7 +1,7 @@
 'use strict';
-(function(name, context, definition){
+(function(name, context, definition) {
     context[name] = definition();
-})('AdsmuraiTracking', window, function(){
+})('AdsmuraiTracking', window, function() {
     const AdsmuraiTracking = function(trackingId, galleryId) {
         this.trackingId = trackingId;
         this.galleryId = galleryId;
@@ -35,7 +35,7 @@
 
         function calculateFingerprint() {
             return new Promise(function(resolve) {
-                new Fingerprint2().get(function(fingerprintHash, fingerprintComponents){
+                new Fingerprint2().get(function(fingerprintHash, fingerprintComponents) {
                     resolve({
                         hash: fingerprintHash,
                         components: fingerprintComponents
@@ -52,7 +52,6 @@
     };
 
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
-        // TODO: this method should return a promise that's resolved after the servers responds
         if (this.utils.isDoNotTrackEnabled()) return;
 
         const payload = Object.assign({
@@ -67,15 +66,30 @@
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://' + window.adsmurai_consts.TRACKING_API_DOMAIN + '/' + eventName);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(payload));
+
+        return new Promise(function(resolve, reject) {
+            xhr.onload = function() {
+                if (xhr.status < 200 || xhr.status >= 300) {
+                    reject({status: xhr.status});
+                } else {
+                    resolve({status: xhr.status});
+                }
+            };
+
+            xhr.onerror = function() {
+                reject('An error occurred during the transaction');
+            };
+
+            xhr.send(JSON.stringify(payload));
+        });
     };
 
     AdsmuraiTracking.prototype.registerPageViewEvent = function() {
-        this.registerEvent('pageView');
+        return this.registerEvent('pageView');
     };
 
     AdsmuraiTracking.prototype.registerGalleryViewEvent = function(galleryGridWidth, featuredImages) {
-        this.registerEvent('galleryView', {
+        return this.registerEvent('galleryView', {
             galleryGridWidth: galleryGridWidth,
             featuredImages: featuredImages
         });
