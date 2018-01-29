@@ -16,9 +16,11 @@ before_script:
     function publish_to_npm() {
       GIT_TAG=`git describe --tags --exact-match 2> /dev/null | cat`
       test -n "$GIT_TAG" \
+        || return 0 \
+        && echo "Package version to be published: $GIT_TAG" \
         && test "$GIT_TAG" = `jq '.version' package.json` \
-        && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public \
-        || : ;
+        && echo "Checked: git tag matches package.json version" \
+        && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public ;
     }
     function setup_aws() {
       apk add -U openssl curl tar gzip bash ca-certificates python2 py2-pip \
