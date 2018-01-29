@@ -77,7 +77,7 @@
             };
 
             xhr.onerror = function() {
-                reject({status: xhr.error});
+                reject('An error occurred during the transaction');
             };
 
             xhr.send(JSON.stringify(payload));
