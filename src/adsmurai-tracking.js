@@ -118,6 +118,10 @@
         return this.registerEvent('ugcImageClick', ugcImage);
     };
 
+    AdsmuraiTracking.prototype.registerUgcHoverEvent = function(ugcImage) {
+        return this.registerEvent('ugcImageHover', ugcImage);
+    };
+
     AdsmuraiTracking.prototype.utils = {
         uuidv4: function() {
             /* Following  RFC4122 version 4 UUID. Implementation from https://stackoverflow.com/a/2117523 */
