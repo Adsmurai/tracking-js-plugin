@@ -58,7 +58,7 @@ npm_deploy:
   except:
     - branches
   script:
-    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}">.npmrc
     - yarn install --no-progress
     - yarn build
     - publish_to_npm
