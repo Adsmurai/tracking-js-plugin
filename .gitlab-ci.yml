@@ -40,6 +40,7 @@ test:
     - branches
   except:
     - tags
+    - master
   script:
     - setup_test_dependencies
     - setup_docker
@@ -49,6 +50,8 @@ test:
 
 npm_deploy:
   image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+  variables:
+    DOCKER_DRIVER: overlay2
   stage: deploy
   only:
     - tags
@@ -61,7 +64,11 @@ npm_deploy:
     - publish_to_npm
 
 s3_deploy:
-  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+  image: "docker:17.12.0-ce"
+  variables:
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:17.12.0-ce-dind
   stage: deploy
   only:
     - master
@@ -69,6 +76,6 @@ s3_deploy:
     - tags
   script:
     - setup_aws
-    - yarn install
-    - yarn build
+    - ./docker/yarn install
+    - ./docker/yarn build
     - aws s3 cp dist s3://com.adsmurai.js.libs --recursive --acl public-read
