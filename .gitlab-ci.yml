@@ -13,19 +13,17 @@ before_script:
         fi
       fi
     }
+    function publish_to_npm() {
+      GIT_TAG=`git describe --tags --exact-match 2> /dev/null | cat`
+      test -n "$GIT_TAG" \
+        && test "$GIT_TAG" = `jq '.version' package.json` \
+        && yarn publish --prod --no-progress --non-interactive --new-version "$GIT_TAG" --access public \
+        || : ;
+    }
 
 stages:
-  - build
   - test
-
-build:
-  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
-  stage: build
-  cache:
-    untracked: true
-  script:
-    - yarn install
-    - yarn build
+  - deploy
 
 test:
   image: "docker:17.12.0-ce"
@@ -34,10 +32,38 @@ test:
   services:
     - docker:17.12.0-ce-dind
   stage: test
-  cache:
-    untracked: true
+  only:
+    - branches
+  except:
+    - tags
   script:
     - setup_script_dependencies
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - ./docker/yarn install
     - ./docker/run-all-tests
+
+npm_deploy:
+  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+  stage: deploy
+  only:
+    - tags
+  except:
+    - branches
+  script:
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
+    - yarn install
+    - yarn build
+    - publish_to_npm
+
+s3_deploy:
+  image: "registry.gitlab.com/adsmurai/platform/docker-images/js-tools:dev-8.9"
+  stage: deploy
+  only:
+    - master
+  except:
+    - tags
+  script:
+    - yarn install
+    - yarn build
+    - echo "S3 deploy placeholder"

@@ -8,3 +8,5 @@ webpack.config.js
 yarn.lock
 yarn-error.log
 .eslintrc.json
+.gitlab-ci.yml
+.npmrc
