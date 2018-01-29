@@ -10,18 +10,6 @@
             hash: null,
             components: null
         };
-        this.ALLOWED_EVENT_TYPES_NAMES = [
-            'pageView',
-            'galleryView',
-            'ugcImageHover',
-            'productImageHover',
-            'ugcImageClick',
-            'goToProductClick',
-            'addProductToCart',
-            'cartView',
-            'finishPurchase',
-            'test'
-        ];
 
         const _adsmuraiTracking = this;
         loadFingerprintingJavascript()
@@ -63,11 +51,26 @@
         }
     };
 
+    Object.defineProperty(AdsmuraiTracking, 'ALLOWED_EVENT_TYPES_NAMES', {
+        value: [
+            'pageView',
+            'galleryView',
+            'ugcImageHover',
+            'productImageHover',
+            'ugcImageClick',
+            'goToProductClick',
+            'addProductToCart',
+            'cartView',
+            'finishPurchase',
+            'test'
+        ]
+    });
+
     AdsmuraiTracking.prototype.registerEvent = function(eventName, eventData) {
         if (this.utils.isDoNotTrackEnabled()) return;
 
-        if (!(this.ALLOWED_EVENT_TYPES_NAMES.includes(eventName))) {
-            return Promise.reject('Event name "' + eventName + '" not allowed. Use one of: ' + this.ALLOWED_EVENT_TYPES_NAMES);
+        if (!AdsmuraiTracking.ALLOWED_EVENT_TYPES_NAMES.includes(eventName)) {
+            return Promise.reject('Event name "' + eventName + '" not allowed. Use one of: ' + AdsmuraiTracking.ALLOWED_EVENT_TYPES_NAMES);
         }
 
         const payload = Object.assign({
