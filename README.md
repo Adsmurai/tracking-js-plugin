@@ -41,8 +41,15 @@ this event.*
 
 From a `<script>` tag:
 ```js
-const galleryGridWidth = ...;
-const faturedImages = ...;
+const galleryGridWidth = 0;
+const featuredImages = [
+    {
+        "imageId": "string",
+        "position": 0,
+        "gridX": 0,
+        "gridY": 0
+    },
+];
 adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
 ```
 
@@ -52,7 +59,28 @@ This event can be manually triggered each time an image is clicked.
 
 From a `<script>` tag:
 ```js
-const ugcImage = ...;
+const ugcImage = {
+    "imageId": "string",
+    "position": 0,
+    "gridX": 0,
+    "gridY": 0
+};
+adsmurai_tracking.registerUgcHoverEvent(ugcImage);
+```
+
+
+### `adsmurai_tracking.registerUgcClickEvent`
+
+This event can be manually triggered each time an image is clicked.
+
+From a `<script>` tag:
+```js
+const ugcImage = {
+    "imageId": "string",
+    "position": 0,
+    "gridX": 0,
+    "gridY": 0
+};
 adsmurai_tracking.registerUgcClickEvent(ugcImage);
 ```
 

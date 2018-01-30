@@ -46,8 +46,18 @@ defineSupportCode(function({Before, When, Then}) {
 
     When(/^I launch an image click event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
-        const ugcImage = eventData;
+        const ugcImage = eventData.ugcImage;
         return launchUgcImageClickEvent(this.state, ugcImage);
+    });
+
+    When(/^I launch an image hover event$/, function() {
+        return launchUgcImageHoverEvent(this.state);
+    });
+
+    When(/^I launch an image hover event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const ugcImage = eventData.ugcImage;
+        return launchUgcImageHoverEvent(this.state, ugcImage);
     });
 
     When(/^I launch a page view event$/, function() {
@@ -208,6 +218,17 @@ defineSupportCode(function({Before, When, Then}) {
             window
                 .adsmurai_tracking
                 .registerUgcClickEvent(ugcImage)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, ugcImage);
+    }
+
+
+    function launchUgcImageHoverEvent(state, ugcImage) {
+        return executeInBrowser(state, function(ugcImage, done) {
+            window
+                .adsmurai_tracking
+                .registerUgcHoverEvent(ugcImage)
                 .then(() => done('resolved'))
                 .catch(() => done('rejected'));
         }, ugcImage);
