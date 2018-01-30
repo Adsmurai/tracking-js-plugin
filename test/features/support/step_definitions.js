@@ -46,7 +46,7 @@ defineSupportCode(function({Before, When, Then}) {
 
     When(/^I launch an image click event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
-        const ugcImage = eventData;
+        const ugcImage = eventData.ugcImage;
         return launchUgcImageClickEvent(this.state, ugcImage);
     });
 
@@ -56,7 +56,7 @@ defineSupportCode(function({Before, When, Then}) {
 
     When(/^I launch an image hover event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
-        const ugcImage = eventData;
+        const ugcImage = eventData.ugcImage;
         return launchUgcImageHoverEvent(this.state, ugcImage);
     });
 

@@ -115,11 +115,11 @@
     };
 
     AdsmuraiTracking.prototype.registerUgcClickEvent = function(ugcImage) {
-        return this.registerEvent('ugcImageClick', ugcImage);
+        return this.registerEvent('ugcImageClick', {ugcImage: ugcImage});
     };
 
     AdsmuraiTracking.prototype.registerUgcHoverEvent = function(ugcImage) {
-        return this.registerEvent('ugcImageHover', ugcImage);
+        return this.registerEvent('ugcImageHover', {ugcImage: ugcImage});
     };
 
     AdsmuraiTracking.prototype.utils = {
