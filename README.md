@@ -46,6 +46,16 @@ const faturedImages = ...;
 adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
 ```
 
+### `adsmurai_tracking.registerUgcClickEvent`
+
+This event can be manually triggered each time an image is clicked.
+
+From a `<script>` tag:
+```js
+const ugcImage = ...;
+adsmurai_tracking.registerUgcClickEvent(ugcImage);
+```
+
 ## Build process
 
 *This section is only for people actively developing this JS plugin. So if you
