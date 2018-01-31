@@ -28,6 +28,19 @@ defineSupportCode(function({Before, When, Then}) {
             });
     });
 
+    When(/^I launch an add product to cart event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const product = eventData.product;
+
+        return executeInBrowser(this.state, function(product, done) {
+            window
+                .adsmurai_tracking
+                .registerAddProductToCartEvent(product)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, product);
+    });
+
     When(/^I launch a gallery view event$/, function() {
         return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
@@ -40,24 +53,30 @@ defineSupportCode(function({Before, When, Then}) {
         return launchRegisterGalleryViewEvent(this.state, galleryGridWidth, featuredImages);
     });
 
-    When(/^I launch an image click event$/, function() {
-        return launchUgcImageClickEvent(this.state);
-    });
-
     When(/^I launch an image click event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
         const ugcImage = eventData.ugcImage;
-        return launchUgcImageClickEvent(this.state, ugcImage);
-    });
 
-    When(/^I launch an image hover event$/, function() {
-        return launchUgcImageHoverEvent(this.state);
+        return executeInBrowser(this.state, function(ugcImage, done) {
+            window
+                .adsmurai_tracking
+                .registerUgcClickEvent(ugcImage)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, ugcImage);
     });
 
     When(/^I launch an image hover event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
         const ugcImage = eventData.ugcImage;
-        return launchUgcImageHoverEvent(this.state, ugcImage);
+
+        return executeInBrowser(this.state, function(ugcImage, done) {
+            window
+                .adsmurai_tracking
+                .registerUgcHoverEvent(ugcImage)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, ugcImage);
     });
 
     When(/^I launch a page view event$/, function() {
@@ -133,10 +152,10 @@ defineSupportCode(function({Before, When, Then}) {
 
     Then(/^the browser sends a "([^"]*)" request to "([^"]*)"$/, function(httpVerb, url, callback) {
         const requests = this.state.ajaxRequests;
-        assert.equal(1, requests.length);
+        assert.equal(requests.length, 1);
         const request = requests[0];
-        assert.equal(httpVerb, request.method);
-        assert.equal(url, request.url);
+        assert.equal(request.method, httpVerb);
+        assert.equal(request.url, url);
         callback();
     });
 
@@ -169,7 +188,7 @@ defineSupportCode(function({Before, When, Then}) {
         const payload = this.state.ajaxRequests[0].body;
 
         Object.keys(eventData).forEach(function(key) {
-            assert.deepEqual(payload[key], eventData[key]);
+            assert.deepEqual(eventData[key], payload[key]);
         });
 
         callback();
@@ -211,26 +230,5 @@ defineSupportCode(function({Before, When, Then}) {
                 .then(() => done('resolved'))
                 .catch(() => done('rejected'));
         }, galleryGridWidth, featuredImages);
-    }
-
-    function launchUgcImageClickEvent(state, ugcImage) {
-        return executeInBrowser(state, function(ugcImage, done) {
-            window
-                .adsmurai_tracking
-                .registerUgcClickEvent(ugcImage)
-                .then(() => done('resolved'))
-                .catch(() => done('rejected'));
-        }, ugcImage);
-    }
-
-
-    function launchUgcImageHoverEvent(state, ugcImage) {
-        return executeInBrowser(state, function(ugcImage, done) {
-            window
-                .adsmurai_tracking
-                .registerUgcHoverEvent(ugcImage)
-                .then(() => done('resolved'))
-                .catch(() => done('rejected'));
-        }, ugcImage);
     }
 });

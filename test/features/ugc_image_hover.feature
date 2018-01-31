@@ -6,20 +6,13 @@ Feature: Image click tracking
   Background:
     # Nothing here... yet
 
-  Scenario: Requests are sent to the adequate endpoint
-    Given I browse "http://tracking-test.adsmurai.local"
-    When I am on "/a.html"
-      And I launch an image hover event
-      And I take a snapshot of sent AJAX requests
-    Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/ugcImageHover"
-
-
   Scenario Outline: Requests are sent with image related info
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
       And I launch an image hover event with payload containing '<eventData>'
       And I take a snapshot of sent AJAX requests
-    Then the payload contains the eventData '<eventData>'
+    Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/ugcImageHover"
+      And the payload contains the eventData '<eventData>'
 
     Examples:
       | eventData                                                                       |
