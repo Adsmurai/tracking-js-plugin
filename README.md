@@ -29,6 +29,14 @@ the script to your page and initialize it. The `'TRACKING_ID'` and
 
 ## Usage (available event triggers)
 
+### `adsmurai_tracking.registerCartViewEvent`
+This event can be manually triggered each time the cart is loaded.
+
+From a `<script>` tag:
+```js
+adsmurai_tracking.registerCartViewEvent();
+```
+
 ### `adsmurai_tracking.registerGalleryViewEvent`
 This event can be manually triggered each time a gallery is loaded. *If you are
 a gallery user (but not a gallery developer) then you don't have to worry about
