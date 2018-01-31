@@ -118,6 +118,13 @@
         });
     };
 
+    AdsmuraiTracking.prototype.registerProductImageHoverEvent = function(product, ugcImage) {
+        return this.registerEvent('productImageHover', {
+            product: product,
+            ugcImage: ugcImage
+        });
+    };
+
     AdsmuraiTracking.prototype.registerUgcClickEvent = function(ugcImage) {
         return this.registerEvent('ugcImageClick', {ugcImage: ugcImage});
     };

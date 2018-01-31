@@ -53,6 +53,31 @@ const featuredImages = [
 adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
 ```
 
+### `adsmurai_tracking.registerProductImageHoverEvent`
+
+This event can be manually triggered each time a product image is hovered.
+Note that the `ugcImage` parameter is optional.
+
+From a `<script>` tag:
+```js
+const product = {
+    productId: "a product id", 
+    price: {
+        amount: 42,
+        currencyISOCode: "an iso currency code"
+    }
+};
+
+const ugcImage = {
+    "imageId": "string",
+    "position": 0,
+    "gridX": 0,
+    "gridY": 0
+};
+adsmurai_tracking.registerUgcHoverEvent(product, ugcImage);
+```
+
+
 ### `adsmurai_tracking.registerUgcClickEvent`
 
 This event can be manually triggered each time an image is clicked.
