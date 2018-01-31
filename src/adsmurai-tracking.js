@@ -111,6 +111,10 @@
         return this.registerEvent('cartView');
     };
 
+    AdsmuraiTracking.prototype.registerFinishPurchaseEvent = function(products) {
+        return this.registerEvent('finishPurchase', {products: products});
+    };
+
     AdsmuraiTracking.prototype.registerGalleryViewEvent = function(galleryGridWidth, featuredImages) {
         return this.registerEvent('galleryView', {
             galleryGridWidth: galleryGridWidth,

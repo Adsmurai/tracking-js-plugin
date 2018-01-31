@@ -51,11 +51,24 @@ defineSupportCode(function({Before, When, Then}) {
         });
     });
 
+    When(/^I launch a finish purchase event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const products = eventData.products;
+
+        return executeInBrowser(this.state, function(products, done) {
+            window
+                .adsmurai_tracking
+                .registerFinishPurchaseEvent(products)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, products);
+    });
+
     When(/^I launch a gallery view event$/, function() {
         return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
 
-    When(/^I launch product image hover event with payload containing '([^']*)'$/, function(eventDataString) {
+    When(/^I launch a product image hover event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
         const product = eventData.product;
         const ugcImage = eventData.ugcImage;
