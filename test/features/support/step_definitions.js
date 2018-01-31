@@ -45,6 +45,20 @@ defineSupportCode(function({Before, When, Then}) {
         return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
 
+    When(/^I launch product image hover event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const product = eventData.product;
+        const ugcImage = eventData.ugcImage;
+
+        return executeInBrowser(this.state, function(product, ugcImage, done) {
+            window
+                .adsmurai_tracking
+                .registerProductImageHoverEvent(product, ugcImage)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, product, ugcImage);
+    });
+
     When(/^I launch a gallery view event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
         const galleryGridWidth = eventData.galleryGridWidth;

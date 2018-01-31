@@ -29,12 +29,7 @@ the script to your page and initialize it. The `'TRACKING_ID'` and
 
 ## Usage (available event triggers)
 
-### `adsmurai_tracking.registerPageViewEvent`
-This event is automatically triggered on every page load. **Don't trigger it on
-your own.** It must be triggered one single time per page view.
-
 ### `adsmurai_tracking.registerGalleryViewEvent`
-
 This event can be manually triggered each time a gallery is loaded. *If you are
 a gallery user (but not a gallery developer) then you don't have to worry about
 this event.*
@@ -53,8 +48,35 @@ const featuredImages = [
 adsmurai_tracking.registerGalleryViewEvent(galleryGridWidth, featuredImages);
 ```
 
-### `adsmurai_tracking.registerUgcClickEvent`
+### `adsmurai_tracking.registerPageViewEvent`
+This event is automatically triggered on every page load. **Don't trigger it on
+your own.** It must be triggered one single time per page view.
 
+### `adsmurai_tracking.registerProductImageHoverEvent`
+This event can be manually triggered each time a product image is hovered.
+Note that the `ugcImage` parameter is optional.
+
+From a `<script>` tag:
+```js
+const product = {
+    productId: "a product id", 
+    price: {
+        amount: 42,
+        currencyISOCode: "an iso currency code"
+    }
+};
+
+const ugcImage = {
+    "imageId": "string",
+    "position": 0,
+    "gridX": 0,
+    "gridY": 0
+};
+adsmurai_tracking.registerUgcHoverEvent(product, ugcImage);
+```
+
+
+### `adsmurai_tracking.registerUgcClickEvent`
 This event can be manually triggered each time an image is clicked.
 
 From a `<script>` tag:
@@ -70,7 +92,6 @@ adsmurai_tracking.registerUgcHoverEvent(ugcImage);
 
 
 ### `adsmurai_tracking.registerUgcClickEvent`
-
 This event can be manually triggered each time an image is clicked.
 
 From a `<script>` tag:
@@ -85,7 +106,6 @@ adsmurai_tracking.registerUgcClickEvent(ugcImage);
 ```
 
 ## Build process
-
 *This section is only for people actively developing this JS plugin. So if you
 only care about how to use it, you can save your precious time.*
 
