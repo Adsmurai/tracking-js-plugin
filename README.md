@@ -84,7 +84,7 @@ adsmurai_tracking.registerUgcHoverEvent(product, ugcImage);
 ```
 
 
-### `adsmurai_tracking.registerUgcClickEvent`
+### `adsmurai_tracking.registerUgcHoverEvent`
 This event can be manually triggered each time an image is clicked.
 
 From a `<script>` tag:
