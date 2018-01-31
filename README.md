@@ -22,7 +22,7 @@ the script to your page and initialize it. The `'TRACKING_ID'` and
         window.adsmurai_tracking = new AdsmuraiTracking('TRACKING_ID', 'GALLERY_ID');
         window.adsmurai_tracking.registerPageViewEvent();
     };
-    adsmuraiTrackingElement.src = 'adsmurai-tracking.min.js';
+    adsmuraiTrackingElement.src = 'https://assets-cdn.adsmurai.com/adsmurai-tracking.min.js';
     document.body.appendChild(adsmuraiTrackingElement);
 </script>
 ```
