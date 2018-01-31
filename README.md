@@ -53,6 +53,27 @@ From a `<script>` tag:
 adsmurai_tracking.registerCartViewEvent();
 ```
 
+### `adsmurai_tracking.registerFinishPurchaseEvent`
+This event can be manually triggered each time a purchase is finished.
+
+From a `<script>` tag:
+```js
+const products =  [
+    {
+        product: {
+            productId: "a product id", 
+            price: {
+                amount: 42, 
+                currencyISOCode: "an iso currency code"
+            }
+        }
+    },
+];
+
+
+adsmurai_tracking.registerFinishPurchaseEvent(products);
+```
+
 ### `adsmurai_tracking.registerGalleryViewEvent`
 This event can be manually triggered each time a gallery is loaded. *If you are
 a gallery user (but not a gallery developer) then you don't have to worry about
