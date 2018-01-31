@@ -68,7 +68,7 @@ defineSupportCode(function({Before, When, Then}) {
         return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
 
-    When(/^I launch product image hover event with payload containing '([^']*)'$/, function(eventDataString) {
+    When(/^I launch a product image hover event with payload containing '([^']*)'$/, function(eventDataString) {
         const eventData = JSON.parse(eventDataString);
         const product = eventData.product;
         const ugcImage = eventData.ugcImage;

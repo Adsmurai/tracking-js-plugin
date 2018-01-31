@@ -10,7 +10,7 @@ Feature: Product image hover tracking
   Scenario Outline: Requests are sent with product related info
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
-      And I launch product image hover event with payload containing '<eventData>'
+      And I launch a product image hover event with payload containing '<eventData>'
       And I take a snapshot of sent AJAX requests
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/productImageHover"
       And the payload contains the eventData '<eventData>'
@@ -22,7 +22,7 @@ Feature: Product image hover tracking
   Scenario Outline: Requests are sent with product and image related info
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
-      And I launch product image hover event with payload containing '<eventData>'
+      And I launch a product image hover event with payload containing '<eventData>'
       And I take a snapshot of sent AJAX requests
     Then the browser sends a "POST" request to "https://tracking-api.adsmurai.local/productImageHover"
       And the payload contains the eventData '<eventData>'
