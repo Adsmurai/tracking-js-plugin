@@ -7,7 +7,7 @@ Feature: Cart view tracking
     # Nothing here... yet
 
 
-  Scenario: Requests are sent with image related info
+  Scenario: Requests are sent to the cartView endpoint
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
       And I launch a cart view event

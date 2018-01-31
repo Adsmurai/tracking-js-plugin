@@ -17,6 +17,7 @@
     "eslint": "^4.15.0",
     "eslint-plugin-import": "^2.8.0",
     "fingerprintjs2": "^1.5.1",
+    "gherkin-lint": "^2.8.0",
     "husky": "^0.15.0-rc.3",
     "mocha": "^5.0.0",
     "uglifyjs-webpack-plugin": "^1.1.6",

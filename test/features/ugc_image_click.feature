@@ -7,7 +7,7 @@ Feature: Image click tracking
     # Nothing here... yet
 
 
-  Scenario Outline: Requests are sent with image related info
+  Scenario Outline: Requests are sent to ugcImageClick endpoint with image related info
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
       And I launch an image click event with payload containing '<eventData>'
