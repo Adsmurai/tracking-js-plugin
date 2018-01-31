@@ -1,5 +1,8 @@
 image: "alpine:3.7"
 
+variables:
+    HUSKY_SKIP_INSTALL: "true"
+
 before_script:
   - |
     function setup_test_dependencies() {
