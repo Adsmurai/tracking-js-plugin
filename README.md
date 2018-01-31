@@ -29,6 +29,22 @@ the script to your page and initialize it. The `'TRACKING_ID'` and
 
 ## Usage (available event triggers)
 
+### `adsmurai_tracking.registerAddProductToCartEvent`
+This event can be manually triggered each time a product is added to the cart.
+
+From a `<script>` tag:
+```js
+const product = {
+    productId: "a product id", 
+    price: {
+        amount: 42,
+        currencyISOCode: "an iso currency code"
+    }
+};
+
+adsmurai_tracking.registerAddProductToCartEvent(product);
+```
+
 ### `adsmurai_tracking.registerCartViewEvent`
 This event can be manually triggered each time the cart is loaded.
 
