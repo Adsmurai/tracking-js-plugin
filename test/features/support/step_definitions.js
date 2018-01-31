@@ -28,6 +28,19 @@ defineSupportCode(function({Before, When, Then}) {
             });
     });
 
+    When(/^I launch an add product to cart event with payload containing '([^']*)'$/, function(eventDataString) {
+        const eventData = JSON.parse(eventDataString);
+        const product = eventData.product;
+
+        return executeInBrowser(this.state, function(product, done) {
+            window
+                .adsmurai_tracking
+                .registerAddProductToCartEvent(product)
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        }, product);
+    });
+
     When(/^I launch a gallery view event$/, function() {
         return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
@@ -133,10 +146,10 @@ defineSupportCode(function({Before, When, Then}) {
 
     Then(/^the browser sends a "([^"]*)" request to "([^"]*)"$/, function(httpVerb, url, callback) {
         const requests = this.state.ajaxRequests;
-        assert.equal(1, requests.length);
+        assert.equal(requests.length, 1);
         const request = requests[0];
-        assert.equal(httpVerb, request.method);
-        assert.equal(url, request.url);
+        assert.equal(request.method, httpVerb);
+        assert.equal(request.url, url);
         callback();
     });
 
@@ -169,7 +182,7 @@ defineSupportCode(function({Before, When, Then}) {
         const payload = this.state.ajaxRequests[0].body;
 
         Object.keys(eventData).forEach(function(key) {
-            assert.deepEqual(payload[key], eventData[key]);
+            assert.deepEqual(eventData[key], payload[key]);
         });
 
         callback();

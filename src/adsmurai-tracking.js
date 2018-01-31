@@ -107,6 +107,10 @@
         return this.registerEvent('pageView');
     };
 
+    AdsmuraiTracking.prototype.registerAddProductToCartEvent = function(product) {
+        return this.registerEvent('addProductToCart', {product: product});
+    };
+
     AdsmuraiTracking.prototype.registerGalleryViewEvent = function(galleryGridWidth, featuredImages) {
         return this.registerEvent('galleryView', {
             galleryGridWidth: galleryGridWidth,
