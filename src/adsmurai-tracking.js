@@ -103,10 +103,6 @@
         });
     };
 
-    AdsmuraiTracking.prototype.registerPageViewEvent = function() {
-        return this.registerEvent('pageView');
-    };
-
     AdsmuraiTracking.prototype.registerAddProductToCartEvent = function(product) {
         return this.registerEvent('addProductToCart', {product: product});
     };
@@ -116,6 +112,10 @@
             galleryGridWidth: galleryGridWidth,
             featuredImages: featuredImages
         });
+    };
+
+    AdsmuraiTracking.prototype.registerPageViewEvent = function() {
+        return this.registerEvent('pageView');
     };
 
     AdsmuraiTracking.prototype.registerProductImageHoverEvent = function(product, ugcImage) {
