@@ -41,6 +41,16 @@ defineSupportCode(function({Before, When, Then}) {
         }, product);
     });
 
+    When(/^I launch a cart view event$/, function() {
+        return executeInBrowser(this.state, function(done) {
+            window
+                .adsmurai_tracking
+                .registerCartViewEvent()
+                .then(() => done('resolved'))
+                .catch(() => done('rejected'));
+        });
+    });
+
     When(/^I launch a gallery view event$/, function() {
         return launchRegisterGalleryViewEvent(this.state, 0, []);
     });
