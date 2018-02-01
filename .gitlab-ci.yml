@@ -1,8 +1,5 @@
 image: "alpine:3.7"
 
-variables:
-    HUSKY_SKIP_INSTALL: "true"
-
 before_script:
   - |
     function setup_test_dependencies() {
@@ -50,7 +47,7 @@ test:
     - setup_test_dependencies
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - ./docker/yarn install --no-progress
+    - ./docker/yarn install --no-progress --ignore-scripts --non-interactive
     - ./docker/run-all-tests
 
 npm_deploy:
@@ -64,7 +61,7 @@ npm_deploy:
     - branches
   script:
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}">.npmrc
-    - yarn install --no-progress
+    - yarn install --no-progress --ignore-scripts --non-interactive
     - yarn build
     - publish_to_npm
 
@@ -83,6 +80,6 @@ s3_deploy:
     - setup_aws
     - setup_docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - ./docker/yarn install --no-progress
+    - ./docker/yarn install --no-progress --ignore-scripts --non-interactive
     - ./docker/yarn build
     - aws s3 cp dist s3://com.adsmurai.js.libs --recursive --acl public-read
