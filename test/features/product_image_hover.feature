@@ -7,7 +7,7 @@ Feature: Product image hover tracking
     # Nothing here... yet
 
 
-  Scenario Outline: Requests are sent with product related info
+  Scenario Outline: Requests are sent with product related info to productImageHove endpoint
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
       And I launch a product image hover event with payload containing '<eventData>'
