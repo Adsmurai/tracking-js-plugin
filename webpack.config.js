@@ -1,7 +1,7 @@
 const path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = function (env) {
+module.exports = function(env) {
     env = env || { devMode: false };
 
     const fileEntries =  [

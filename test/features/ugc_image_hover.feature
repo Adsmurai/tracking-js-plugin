@@ -1,4 +1,4 @@
-Feature: Image click tracking
+Feature: Image hover tracking
   In order to have a better understanding of user behaviour
   As a web page owner
   I want to track hovered images
@@ -6,7 +6,7 @@ Feature: Image click tracking
   Background:
     # Nothing here... yet
 
-  Scenario Outline: Requests are sent with image related info
+  Scenario Outline: Requests are sent to ugcImageHover endpoint with image related info
     Given I browse "http://tracking-test.adsmurai.local"
     When I am on "/a.html"
       And I launch an image hover event with payload containing '<eventData>'

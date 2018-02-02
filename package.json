@@ -17,6 +17,8 @@
     "eslint": "^4.15.0",
     "eslint-plugin-import": "^2.8.0",
     "fingerprintjs2": "^1.5.1",
+    "gherkin-lint": "^2.8.0",
+    "husky": "^0.15.0-rc.3",
     "mocha": "^5.0.0",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webdriverajax": "git://github.com/tonipenya/webdriverajax.git#header-intercept",
@@ -29,5 +31,10 @@
     "prepublishOnly": "yarn build",
     "test-functional": "cucumber.js ./test/features",
     "test-unit": "mocha test/specs/**/*.js -R dot"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn eslint . && yarn gherkin-lint"
+    }
   }
 }
